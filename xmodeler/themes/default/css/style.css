@@ -1,0 +1,154 @@
+.canvas {
+	background:url('../images/grid.jpg') repeat;
+    border-right:1px solid #ccc;
+    border-bottom:1px solid #ccc;
+}
+
+ul.ctx-menu{
+	padding-left : 30px !important;
+	position : absolute;
+	z-index : 25003;
+	background-color : #f0f0f0;
+	border : 1px solid #99bce8;
+	color : #333;
+	display: none;
+	width : 160px;
+	height : 'auto';
+	font-size : 13px;
+	-moz-box-shadow: 5px 5px 5px #aaa; 
+	-webkit-box-shadow: 5px 5px 5px #aaa; 
+	box-shadow: 5px 5px 5px #aaa; 
+	-ms-filter: progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa,direction=135,strength=5); 
+    filter: progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa,direction=135,strength=5); 
+}
+
+ul.ctx-menu li {
+	height : 30px;
+	line-height : 30px;
+	padding: 0 12px;
+	margin:3px;
+	cursor: pointer;
+	border:1px solid #f0f0f0;
+}
+
+ul.ctx-menu li.curr {
+	background-color: #DEEBFB;
+	border: 1px solid #99bce8;
+	margin:3px;
+}
+
+ul.ctx-menu li.sp {
+	list-style : none;
+	height : 0px;
+	line-height : 0px;
+	cursor: default !important;
+	border-top:1px solid #ccc;
+	border-bottom: 1px solid #fff;
+}
+
+ul.ctx-menu li.parallel-gateway {
+	list-style-image: url(../images/parallel_gateway16.png);
+}
+
+ul.ctx-menu li.delete{
+	list-style-image: url(../images/delete.png);
+}
+
+ul.ctx-menu li.end-event{
+	list-style-image: url(../images/end16.png);
+}
+
+ul.ctx-menu li.user-task{
+	list-style-image: url(../images/user.png);
+}
+
+ul.ctx-menu li.service-task{
+	list-style-image: url(../images/service.png);
+}
+
+ul.ctx-menu li.connection{
+	list-style-image: url(../images/right-arrow.png);
+}
+
+ul.ctx-menu li.subprocess{
+	list-style-image: url(../images/subprocess16.png);
+}
+
+ul.ctx-menu li.start-event{
+	list-style-image: url(../images/start16.png);
+}
+
+ul.ctx-menu li.script-task{
+	list-style-image: url(../images/script.png);
+}
+
+ul.ctx-menu li.timer{
+	list-style-image: url(../images/timer.png);
+}
+
+
+.start16 {
+	background: url(../images/start16.png) no-repeat;
+}
+
+.end16 {
+	background: url(../images/end16.png) no-repeat;
+}
+.error16 {
+	background: url(../images/error-end16.png) no-repeat;
+}
+
+.user16 {
+	background: url(../images/user.png) no-repeat;
+}
+
+.script16 {
+	background: url(../images/script.png) no-repeat;
+}
+
+.service16 {
+	background: url(../images/service.png) no-repeat;
+}
+
+.parallel16{
+  background: url(../images/parallel_gateway16.png) no-repeat;
+}
+.exclusive16{
+	background: url(../images/exclusive-gateway16.png) no-repeat;
+}
+
+.subprocess16{
+	background: url(../images/subprocess16.png) no-repeat;
+}
+
+.connection16{
+	background: url(../images/right-arrow.png) no-repeat;
+}
+
+.canvas-text {
+	position: absolute;
+	z-index : 25001;
+	color : #333;
+	font-size :12px;
+	text-align : center;
+	height :12px;
+	line-height : 12px;
+	overflow: hidden;
+}
+
+.canvas-textfield {
+	border:1px solid #ccc; 
+	background-color:#fefefe;
+	width:160px;
+	position: absolute; 
+	z-index:25005;   
+	height :22px;
+	line-height : 22px;
+	font-size :12px;
+	display:none;
+}
+
+canvas {
+	font-size : 12px;
+}
+
