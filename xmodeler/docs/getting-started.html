@@ -8,8 +8,6 @@
 
 <!-- 最新 Bootstrap 核心 CSS 文件 -->
 <link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/css/bootstrap.min.css">
-<!-- 可选的Bootstrap主题文件（一般不用引入） -->
-<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/css/bootstrap-theme.min.css">
 <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
 <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
 <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
@@ -25,6 +23,7 @@
 <link rel="shortcut icon" href="images/logo16.png" type="image/x-icon" />
 
 <link rel="stylesheet" href="css/guide.css">
+<link rel="stylesheet" href="js/code/codemirror.css">
 <title>XModeler Documentaion</title>
 
 <style>
@@ -38,6 +37,10 @@ pre code { background: transparent; }
     }
 }
 
+h2 {
+  font-size:18px;
+}
+
 .bs-docs-section p {
 	line-height: 2;
 }
@@ -46,6 +49,12 @@ pre code { background: transparent; }
 	line-height: 1.4;
 }
 
+.CodeMirror {
+    height : auto !important;
+}
+
+.cm-s-default .cm-comment {color: #009900;}
+.cm-s-default .cm-tag {color: #d820a1;}
 
 </style>
 
@@ -103,17 +112,13 @@ pre code { background: transparent; }
 	<div class="container bs-docs-container">
 		<div class="row">
 			<div class="col-md-3">
-				<div class="bheaders-sidebar hidden-print" role="complementary">
+				<div class="bheaders-sidebar hidden-print" role="complementary" style="position: fixed;width:200px;">
 					<ul class="nav bs-sidenav">
 
 						<li><a href="#download">下载XModeler</a>
 						<li><a href="#activiti">开始吧</a>
 						<li><a href="#whats-included">包含了哪些文件</a>
-							<ul class="nav">
-								<li><a href="#whats-included-precompiled">编译版</a></li>
-								<li><a href="#whats-included-source">源码</a></li>
-							</ul></li>
-						<li><a href="#3thpart">第三方库</a></li>
+						<li><a href="#libs">第三方库</a></li>
 						<li><a href="#browsers">浏览器支持</a></li>
 						<li><a href="#license-faqs">许可证FAQ</a></li>
 						<li><a href="#customizing">定制Bootstrap</a></li>
@@ -134,11 +139,138 @@ pre code { background: transparent; }
 			    <p>
 			      <a class="btn btn-lg btn-primary" href="https://codeload.github.com/catstiger/xmodeler/zip/1.0.2">下载XModeler</a>
 			    </p>
+			    
+			    <div class="page-header">
+			      <h1 id="activiti">开始</h1>
+			    </div>
+			    <p>
+			    XModeler是一个使用HTML5在页面上建模的框架，它本身并不提供任何功能，只是提供了一套基础API，你可以扩展这些API以实现所需的功能。
+			    我们目前提供了Activiti Bpmn建模扩展。如果您正在开发基于工作流的应用，又不喜欢Activiti自带的建模工具，那么，下面的代码也许正好适合您。
+			    </p>
+			    <p>
+			       <h2>首先准备一个符合HTML5规范的HTML文档</h2>
+			    </p>
+			    <div class="highlight">
+			     <textarea mode="htmlmixed">
+<!DOCTYPE html>
+<html lang="zh_cn">
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<meta charset="UTF-8"/>
+</head>
+<body>
+</body>
+</html>
+			     </textarea>
+			    </div>
+			    <p>
+			    <h2 style="font-size:18px;">
+			    引入XModeler和Activiti实现：
+			    </h2>
+			    </p>
+			    <div class="highlight">
+			      
+			      <textarea mode="htmlmixed">
+<!-- jQuery文件，在最前面引入 -->
+<script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.8.3/jquery.min.js"></script>
+<!-- 一个小工具类 -->
+<script type="text/javascript" src="src/base/Utils.js"></script>
+<!-- Quark是一个HTML5游戏框架，在这里用于实现动画效果、绘图和事件 -->
+<script type="text/javascript" src="lib/quark.base-1.0.0.js"></script>
+<!-- XModeler基础类库 -->
+<script type="text/javascript" src="xmodeler.engine.min.js"></script>
+<!-- Activiti BPMN实现 -->
+<script type="text/javascript" src="xmodeler.activity.min.js"></script>
+<!-- 多语言支持 -->		        					
+<script type="text/javascript" src="impl/locale/bpmn-lang-zh_CN.js"></script>
+<!-- 上下文菜单样式表 -->	
+<link rel="stylesheet" href="themes/default/css/style.css"/>
+<!-- 图标定义 -->
+<script type="text/javascript" src="themes/default/Icons.js"></script>
+			      </textarea>
+			    </div>
+			    
+			    <p>
+			    <h2 style="font-size:18px;">
+			    准备一个div用于装载XModeler：
+			    </h2>
+			    </p>
+			    <div class="highlight">
+			      <textarea  mode="htmlmixed">
+<!-- 一定要有height，要不你看不到的 -->
+<div  id="bpm" class="canvas" style="height:360px;"></div>
+			      </textarea>
+			    </div>
+			    
+			    <p>
+			    <h2 style="font-size:18px;">
+			    开始！
+			    </h2>
+			    </p>
+			    <div class="highlight">
+			      <textarea mode="javascript">
+//在Onload事件中加载Xmodeler
+$(function() {
+	var bpm = new ActivityEngine({ //使用Activity Bpmn实现
+		selector : '#bpm' //符合css selector规范
+	});
+});
+			      </textarea>
+			   </div>
+			   <p>
+			      <a class="btn btn-lg btn-primary" href="../examples/simple.html" target="_blank">试试吧</a>
+			    </p> 
+			    <div class="page-header">
+			      <h1 id="whats-included">包含了哪些文件</h1>
+			    </div>
+			    <p>
+			    XModeler是一个使用HTML5在页面上建模的框架，它本身并不提供任何功能，只是提供了一套基础API，你可以扩展这些API以实现所需的功能。
+			    我们目前提供了Activiti Bpmn建模扩展。
+			    </p>
+			    <p>
+			      
+			    </p>
+			    
+			    <div class="page-header">
+			      <h1 id="libs">第三方库</h1>
+			    </div>
+			    <p>
+			    XModeler是一个使用HTML5在页面上建模的框架，它本身并不提供任何功能，只是提供了一套基础API，你可以扩展这些API以实现所需的功能。
+			    我们目前提供了Activiti Bpmn建模扩展。
+			    </p>
+			    <p>
+			      
+			    </p>
 		    </div>
 			
 			</div>
 		</div>
 	</div>
-
+<script src="http://cdn.bootcss.com/holder/2.0/holder.min.js"></script>
+<script src="http://cdn.bootcss.com/highlight.js/7.3/highlight.min.js"></script>
+<script >hljs.initHighlightingOnLoad();</script>
+<script type="text/javascript" src="js/code/codemirror.js"></script>
+<script src="js/code/mode/xml/xml.js"></script>
+<script src="js/code/mode/htmlmixed/htmlmixed.js"></script>
+<script src="js/code/mode/javascript/javascript.js"></script>
+<script type="text/javascript">
+$(function() {
+  $('textarea').each(function() {
+    var mode = $(this).attr("mode");
+    if(!mode) {
+      mode = "xml"
+    }
+    
+    var codeMirror = CodeMirror.fromTextArea(this, {
+      mode:  mode,
+      readOnly : true,
+      lineNumbers : true,
+      height:100
+    });
+  });
+});
+</script>
 </body>
 </html>

@@ -208,7 +208,8 @@ body {
 
 .bs-docs-home,
 .bs-header {
-  color: #a9a9a9;
+  /* color: #a9a9a9; */
+  color : #565656;
   /* background-color: #563d7c; */
   background : url(../images/bg.jpg) repeat-x;
 }
