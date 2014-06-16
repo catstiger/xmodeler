@@ -56,6 +56,9 @@ h2 {
 .cm-s-default .cm-comment {color: #009900;}
 .cm-s-default .cm-tag {color: #d820a1;}
 
+ul li b {
+  color:#428BCA;
+}
 </style>
 
 </head>
@@ -221,14 +224,41 @@ $(function() {
 			   </div>
 			   <p>
 			      <a class="btn btn-lg btn-primary" href="../examples/simple.html" target="_blank">试试吧</a>
-			    </p> 
+			    </p>
+			    
+			    <div class="highlight">
+			        <iframe src="../examples/simple.html" frameborder="0" style="height:400px;width:100%;" scrolling="no"></iframe>
+			    </div>
+			    
+			    <p>
+			      <h2>使用IE？</h2>
+			    </p>
+			    <p>
+			    XModeler在IE9及以上版本上可以完美运行，但是为了在IE6-8下使用XModeler，您必须在所有js之前引入excanvas。
+			    </p>
+			    <div class="highlight">
+			        <textarea mode="htmlmixed">
+<!--[if lte IE 8]>
+<script type="text/javascript" src="js/bpmn/lib/ie/excanvas.js"></script>
+<script type="text/javascript" src="js/bpmn/lib/ie/canvas.text.js"></script>
+<script type="text/javascript" src="js/bpmn/lib/ie/faces/optimer-normal-normal.js"></script>
+<![endif]-->
+			        </textarea>
+			    </div>
+			     
 			    <div class="page-header">
 			      <h1 id="whats-included">包含了哪些文件</h1>
 			    </div>
-			    <p>
-			    XModeler是一个使用HTML5在页面上建模的框架，它本身并不提供任何功能，只是提供了一套基础API，你可以扩展这些API以实现所需的功能。
-			    我们目前提供了Activiti Bpmn建模扩展。
-			    </p>
+			    <ul>
+			       <li><b>build：</b>编译压缩XModeler的源代码的脚本。</li>
+			       <li><b>docs：</b>XModeler文档。</li>
+			       <li><b>examples：</b>很多时候，实例就是最好的文档。</li>
+			       <li><b>lib：</b>第三方类库，站在巨人的肩膀上。</li>
+			       <li><b>src：</b>XModeler源代码。</li>
+			       <li><b>themes：</b>主题，包括css和各种图标文件。</li>
+			       <li><b>xmodeler.engine.min.js：</b>XModeler基础框架，包括绘图、事件响应、上下文菜单以及各种API。</li>
+			       <li><b>xmodeler.activity.min.js：</b>使用XModeler基础框架实现Activiti BPMN流程图绘制，并与服务器端交互。</li>
+			    </ul>
 			    <p>
 			      
 			    </p>

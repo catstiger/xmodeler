@@ -89,7 +89,8 @@ body {
 
 .bs-docs-nav {
   text-shadow: 0 -1px 0 rgba(0,0,0,.15);
-  background-color: #563d7c;
+  /* background-color: #563d7c; */
+  background-color: #393939;
   border-color: #463265;
   box-shadow: 0 1px 0 rgba(255,255,255,.1);
 }
@@ -109,7 +110,8 @@ body {
 .bs-docs-nav .navbar-nav > .active > a,
 .bs-docs-nav .navbar-nav > .active > a:hover {
   color: #fff;
-  background-color: #463265;
+  /* background-color: #463265; */
+  background-color: #000;
 }
 .bs-docs-nav .navbar-toggle {
   border-color: #563d7c;
