@@ -7,7 +7,11 @@
 <script type="text/javascript" src="../lib/ie/canvas.text.js"></script>
 <script type="text/javascript" src="../lib/ie/faces/optimer-normal-normal.js"></script>
 <![endif]-->
-<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.js"></script>
+
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/css/bootstrap.min.css">
+<script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
+
 <script type="text/javascript" src="../src/base/Utils.js"></script>
 <script type="text/javascript" src="../lib/quark.base-1.0.0.js"></script>
 
@@ -22,8 +26,6 @@
 <title>BPM Examples</title>
 <style type="text/css">
 #bpm {	
-    width:1000px;
-    height:430px;
 }
 #pos {
     margin:10px; 
@@ -33,38 +35,65 @@
 
 </style>
 </head>
-<body>
-You may run the demo on a webserver.
-<table style="width:100%;">
-<tr>
-   <td style="width:150px;">
-		<select id="actions">
-			<option value="none" id="actionNone"> Select Action ... </option>
-			<option value="addUserTask"> 手工任务 </option>
-			<option value="addServiceTask"> 服务任务 </option>
-			<option value="addScriptTask"> 脚本任务</option>
-			<option value="addStartEvent">开始事件</option>
-			<option value="addEndEvent">结束事件</option>
-			<option value="addErrorEndEvent"> 错误结束事件</option>
-			<option value="addParallelGateway"> 平行网关</option>
-			<option value="addExclusiveGateway"> 排他网关</option>
-			<option value="addConnection"> 顺序流</option>
-			<option value="addSubProcess"> 子流程</option>
-			<option value="addTimerEvent"> 定时边界事件</option>
-		</select>
-		<input type="checkbox" id="readonly">只读模式
-		
-		<a href="bpmnExt.html">Using Ext JS</a>
-   </td>
-   <td>
-   		<div style="width:100%;margin:5px;height:50px;border:1px dashed red" id="test">
-   		<div id="pos"></div>
-   		</div>
-   </td>
-</tr>
-</table>
+<body style="background-color:#eee;">
 
-<div  id="bpm" class='canvas' style="margin:10px;"></div>
+<header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">
+  <div class="container">
+    <div class="navbar-header">
+      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="../docs/index.html" class="navbar-brand"><img src="../docs/images/logo32.png" style="width:24px;"/>&nbsp;XModeler</a>
+    </div>
+    <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+      <ul class="nav navbar-nav">
+        <li>
+        <a class='bpmn-btn' id="addStartEvent">开始事件</a>
+        </li>
+        <li>
+		<a class='bpmn-btn' id="addEndEvent">结束事件</a>
+		</li>
+        <li>
+		<a class='bpmn-btn' id="addUserTask">手工任务</a>
+		</li>
+        <li>
+		<a class='bpmn-btn' id="addServiceTask">服务任务</a>
+		</li>
+        <li>
+		<a class='bpmn-btn' id="addScriptTask">脚本任务</a>
+		</li>
+        <li>
+		<a class='bpmn-btn' id="addParallelGateway">平行网关</a>
+		</li>
+        <li>
+		<a class='bpmn-btn' id="addExclusiveGateway">排他网关</a>
+		</li>
+        <li>
+		<a class='bpmn-btn' id="addSubProcess">子流程</a>
+		</li>
+        <li>
+		<a class='bpmn-btn' id="addTimerEvent">定时边界事件</a>
+		</li>
+        <li>
+		<a class='bpmn-btn' id="addConnection">顺序流</a>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<div class="container bs-docs-container">
+	<div class="row">
+	    <br><br><br>
+		<div  id="bpm" class='canvas' style="margin-top:10px;height:600px;"></div>
+		<input type="checkbox" id="readonly">只读模式
+	</div>
+</div>	
+
+
+
 
 
 <script type="text/javascript">
@@ -80,6 +109,13 @@ $(function() {
 		}
 	});
 	
+	$('.bpmn-btn').each(function() {
+	  $(this).click(function(e) {
+	    bpm.setAction(this.id);
+	    e.preventDefault();
+	  });
+	});
+	
 	 $('#actions').change(function() {
 		bpm.setAction(this.value);		
 	 });
@@ -91,20 +127,6 @@ $(function() {
 	 $('#test').bind('mousemove', function(e) {
 	    //console.log(e);
 	 });
-	 
-	/*  var a = [23.2, 342,455,56,334,78.2,560,3,223,45,78,8090,34.5,56,23,567,56];
-	 trace(Helper.max(a));
-	 trace(Helper.min(a));
-	 Helper.quickSort(a);
-	 for(var i = 0; i < a.length; i++) {
-		 trace(a[i]);
-	 }
-	 
-	 a = [100,90];
-	 Helper.quickSort(a, 0, a.length-1);
-	 for(var i = 0; i < a.length; i++) {
-		 trace(a[i]);
-	 } */
 });
 </script>
 </body>

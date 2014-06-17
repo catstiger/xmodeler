@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh_cn">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+
+<!-- 最新 Bootstrap 核心 CSS 文件 -->
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/css/bootstrap.min.css">
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
+
+<!--[if lt IE 9]><script src="../docs-assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+  <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script>
+  <script src="http://cdn.bootcss.com/respond.js/1.3.0/respond.min.js"></script>
+<![endif]-->
+<link rel="shortcut icon" href="images/logo16.png" type="image/x-icon" />
+
+<link rel="stylesheet" href="css/guide.css">
+<link rel="stylesheet" href="js/code/codemirror.css">
+<title>XModeler Documentaion</title>
+
+<style>
+body{font-family:"ff-tisa-web-pro-1","ff-tisa-web-pro-2","Lucida Grande","Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB","Hiragino Sans GB W3","WenQuanYi Micro Hei",sans-serif;}
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, .lead {font-family:"ff-tisa-web-pro-1","ff-tisa-web-pro-2","Lucida Grande","Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB","Hiragino Sans GB W3","Microsoft YaHei UI","Microsoft YaHei","WenQuanYi Micro Hei",sans-serif;}
+pre code { background: transparent; }
+@media (min-width: 768px) {
+    .bs-docs-home .bs-social, 
+    .bs-docs-home .bs-masthead-links {
+      margin-left: 0;
+    }
+}
+
+h2 {
+  font-size:18px;
+}
+
+.bs-docs-section p {
+	line-height: 2;
+}
+
+.bs-docs-section p.lead {
+	line-height: 1.4;
+}
+
+.CodeMirror {
+    height : auto !important;
+}
+
+.cm-s-default .cm-comment {color: #009900;}
+.cm-s-default .cm-tag {color: #d820a1;}
+
+ul li b {
+  color:#428BCA;
+}
+</style>
+
+</head>
+<body class="bs-docs-home" cz-shortcut-listen="true">
+  <a class="sr-only" href="#content">Skip to main content</a>
+
+  <!-- Docs master nav -->
+  <header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">
+  <div class="container">
+    <div class="navbar-header">
+      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="index.html" class="navbar-brand"><img src="images/logo32.png" style="width:24px;"/>&nbsp;XModeler</a>
+    </div>
+    <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+      <ul class="nav navbar-nav">
+        <li>
+          <a href="getting-started.html">起步</a>
+        </li>
+        <li class="active" >
+          <a href="activiti.html">Activiti BPMN扩展</a>
+        </li>
+        <li>
+          <a href="dev-guide.html">开发手册</a>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a href="about">关于</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- Docs page layout -->
+	<div class="bs-header" id="content">
+		<div class="container">
+			<h1>Activiti BPMN扩展</h1>
+			<p>Activiti是一个轻量级工作流程和业务流程引擎，它基于Java可以在任何平台下运行。Activiti提供了Eclipse和Web建模工具，但是它很难扩展和整合。
+			因此，我们在XModeler基础引擎上进行了扩展，使得任何基于Java的应用可以方便的整合Activity BPMN建模工具。
+			</p>
+		</div>
+	</div>
+	<div class="container bs-docs-container">
+		<div class="row">
+			<div class="col-md-3">
+				<div class="bs-sidebar hidden-print affix-top" role="complementary">
+					<ul class="nav bs-sidenav">
+
+						<li><a href="#start">开始使用</a>
+						<li><a href="#custom-toolbar">定制工具条</a>
+						<li><a href="#customize">定制</a>
+						<li><a href="#load-from-server">从服务器端加载流程图</a></li>
+						<li><a href="#post-to-server">向服务器端提交流程图</a></li>
+						<li><a href="#events">事件响应</a></li>
+						<li><a href="#node-properties">节点属性</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-md-9" role="main">
+			<div class="bs-docs-section">
+			    <div class="page-header">
+			      <h1 id="start">开始使用</h1>
+			    </div>
+			    <p>
+			    我们在<a href="getting-started.html" target="_blank">起步</a>已经介绍了XModeler Activiti扩展的基本使用方法，
+			    这里我们将详细的进行描述。
+			    </p>
+			    
+			    <p>首先在您的页面中加入XModeler及其依赖。</p>
+			    <textarea model="htmlmixed">
+<!--[if lte IE 8]>
+<script type="text/javascript" src="../lib/ie/excanvas.js"></script>
+<script type="text/javascript" src="../lib/ie/canvas.text.js"></script>
+<script type="text/javascript" src="../lib/ie/faces/optimer-normal-normal.js"></script>
+<![endif]-->
+
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/css/bootstrap.min.css">
+<script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="../src/base/Utils.js"></script>
+<script type="text/javascript" src="../lib/quark.base-1.0.0.js"></script>
+
+<script type="text/javascript" src="../xmodeler.engine.min.js"></script>
+<script type="text/javascript" src="../xmodeler.activity.min.js"></script>
+
+<script type="text/javascript" src="../src/impl/locale/bpmn-lang-zh_CN.js"></script>
+<link rel="stylesheet" type="text/css" href="../themes/default/css/style.css">
+<script type="text/javascript" src="../themes/default/Icons.js"></script>
+			    </textarea>
+			    <br>
+			    <p>声明一个DIV（或者其他DOM），作为XModeler的容器。</p>
+			    <textarea  mode="htmlmixed">
+<div  id="bpm" class="canvas" style="height:360px;"></div>
+			     </textarea>
+			    </div>
+			    <br>
+			    <p>最后在Onload事件中创建Bpmn对象。</p>
+			    <textarea mode="javascript">
+$(function() {
+	var bpm = new ActivityEngine({ //使用Activity Bpmn实现
+		selector : '#bpm' //符合css selector规范
+	});
+});
+			    </textarea>
+			    <br>
+			    <p>
+			    此时，XModeler Activiti流程图对象已经创建完成，页面上会看到一个由浅黄色网格作为背景（可以修改style.css修改这个样式）的区域，这就是绘图区。您可以通过
+			    上下文菜单绘制流程图。
+			    </p>
+			    <p>
+			    <img src="images/bpmn-1.jpg">
+			    </p>
+			    
+			    <div class="page-header">
+			      <h1 id="custom-toolbar">定制工具条</h1>
+			    </div>
+			    <p>
+			    XModeler提供的上下文菜单使用十分方便，但是在某些情况下我们仍然需要一个工具条。例如，如果您在一个子流程中加入某些节点，就必须使用工具条了。下面的例子中，
+			    我们采用Bootstrap的导航条作为工具条。<br>
+			    首先，您要定义工具条：
+			    </p>
+			    <textarea  mode="htmlmixed">
+<nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+<ul class="nav navbar-nav">
+        <li>
+        <a class='bpmn-btn' id="addStartEvent">开始事件</a>
+        </li>
+        <li>
+		<a class='bpmn-btn' id="addEndEvent">结束事件</a>
+		</li>
+        <li>
+		<a class='bpmn-btn' id="addUserTask">手工任务</a>
+		</li>
+        <li>
+		<a class='bpmn-btn' id="addServiceTask">服务任务</a>
+		</li>
+        <li>
+		<a class='bpmn-btn' id="addScriptTask">脚本任务</a>
+		</li>
+        <li>
+		<a class='bpmn-btn' id="addParallelGateway">平行网关</a>
+		</li>
+        <li>
+		<a class='bpmn-btn' id="addExclusiveGateway">排他网关</a>
+		</li>
+        <li>
+		<a class='bpmn-btn' id="addSubProcess">子流程</a>
+		</li>
+        <li>
+		<a class='bpmn-btn' id="addTimerEvent">定时边界事件</a>
+		</li>
+        <li>
+		<a class='bpmn-btn' id="addConnection">顺序流</a>
+   </ul>
+ </nav>
+			    </textarea>
+			    <p>
+			    然后，我们为菜单绑定事件。
+			    </p>
+			    <textarea  mode="javascript">
+$('.bpmn-btn').each(function() {//为每一个工具条按钮绑定click事件
+    $(this).click(function(e) {
+	    bpm.setAction(this.id); //设置BPMN对象当前的活动，这个活动的名字和工具条按钮的ID是一致的。
+	    e.preventDefault();
+	});
+});
+	            </textarea>
+			    <p>
+			    每一个按钮事件都非常简单，实际上，工具条按钮点击的时候只是为XModeler设定了活动状态，这些活动状态包括：
+			    <ul>
+			       <li>addStartEvent：添加一个开始事件。</li>
+			       <li>addEndEvent：添加一个结束事件。</li>
+			       <li>addUserTask：添加用户任务。</li>
+			       <li>addServiceTask：添加服务任务。</li>
+			       <li>addScriptTask：添加脚本任务。</li>
+			       <li>addParallelGateway：添加平行网关。</li>
+			       <li>addExclusiveGateway：添加互斥网关。</li>
+			       <li>addSubProcess：添加子流程。</li>
+			       <li>addTimerEvent：添加计时器事件。</li>
+			       <li>addConnection：开始绘制连接线，当进入绘制连接线状态时，首先点击连接线的开始节点，然后点击连接线的终止节点。</li>
+			    </ul>
+			    当使用工具条的时候，每次添加一个节点，XModeler的活动状态会重置，因此，如果您需要继续添加节点，就需要再次点击按钮。
+			    </p>
+			    
+			    <div class="page-header">
+			      <h1 id="customize">定制</h1>
+			    </div>
+			    <h2>图标</h2>
+			    <p>
+			      在XModeler Activiti BPMN所绘制的图形上，都有一些图标，这些图标定义在themes/default/images下，XModeler通过引用Icons对象使用
+			      这些图标。因此
+			    </p>
+			    <p>
+			      <h2>国际化</h2>
+			    </p>
+			    <p>
+			      <h2>定制背景和上下文菜单样式</h2>
+			    </p>
+		    </div>
+			
+			</div>
+		</div>
+	</div>
+<!-- ////////////////////////Footer//////////////////////// -->
+<footer class="bs-footer" role="contentinfo">
+      <div class="container">
+        <p>Code licensed under <a href="http://www.gnu.org/licenses/lgpl.html" target="_blank">LGPL 3</a>.</p>
+        <p>XModeler版权归<a href="http://www.honqun.com/">石家庄鸿坤网络科技有限公司</a>及<a href="catstiger@gmail.com">Catstiger</a>所有。</p><p>
+        </p>
+        <ul class="footer-links">
+          <li>当前版本： v1.0.2</li>
+        </ul>
+      </div>
+</footer>
+
+
+<script src="http://cdn.bootcss.com/holder/2.0/holder.min.js"></script>
+<script src="http://cdn.bootcss.com/highlight.js/7.3/highlight.min.js"></script>
+<script >hljs.initHighlightingOnLoad();</script>
+<script type="text/javascript" src="js/code/codemirror.js"></script>
+<script src="js/code/mode/xml/xml.js"></script>
+<script src="js/code/mode/htmlmixed/htmlmixed.js"></script>
+<script src="js/code/mode/javascript/javascript.js"></script>
+
+<script type="text/javascript" src="js/application.js"></script>
+<script type="text/javascript">
+$(function() {
+  $('textarea').each(function() {
+    var mode = $(this).attr("mode");
+    if(!mode) {
+      mode = "xml"
+    }
+    
+    var codeMirror = CodeMirror.fromTextArea(this, {
+      mode:  mode,
+      readOnly : true,
+      lineNumbers : true,
+      height:100
+    });
+  });
+});
+</script>
+</body>
+</html>
