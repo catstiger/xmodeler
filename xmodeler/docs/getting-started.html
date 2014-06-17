@@ -83,16 +83,10 @@ ul li b {
           <a href="getting-started.html">起步</a>
         </li>
         <li>
-          <a href="element">元素</a>
+          <a href="activiti.html">Activiti BPMN扩展</a>
         </li>
         <li>
-          <a href="events">事件</a>
-        </li>
-        <li>
-          <a href="customize">定制</a>
-        </li>
-        <li>
-          <a href="activiti">Activiti Bpmn</a>
+          <a href="dev-guide.html">开发手册</a>
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -115,7 +109,7 @@ ul li b {
 	<div class="container bs-docs-container">
 		<div class="row">
 			<div class="col-md-3">
-				<div class="bheaders-sidebar hidden-print" role="complementary" style="position: fixed;width:200px;">
+				<div class="bs-sidebar hidden-print affix-top" role="complementary">
 					<ul class="nav bs-sidenav">
 
 						<li><a href="#download">下载XModeler</a>
@@ -124,9 +118,6 @@ ul li b {
 						<li><a href="#libs">第三方库</a></li>
 						<li><a href="#browsers">浏览器支持</a></li>
 						<li><a href="#license-faqs">许可证FAQ</a></li>
-						<li><a href="#customizing">定制Bootstrap</a></li>
-
-
 					</ul>
 				</div>
 			</div>
@@ -266,18 +257,79 @@ $(function() {
 			    <div class="page-header">
 			      <h1 id="libs">第三方库</h1>
 			    </div>
+			    <ul>
+			       <li><b>jquery：</b>地球人都知道的JQuery，1.8.3以上版本。在XModeler中用于实现基本的DOM操作。</li>
+			       <li><b>quarkJs：</b>一个HTML5游戏框架，提供基于Canvas和DOM的渲染，以及事件绑定等功能。</li>
+			       <li><b>explorercanvas：</b>IE6、IE7、IE8不支持HTML5，explorercanvas能够让基于HTML5的应用在这三个老旧的版本中运行。</li>
+			    </ul>
 			    <p>
-			    XModeler是一个使用HTML5在页面上建模的框架，它本身并不提供任何功能，只是提供了一套基础API，你可以扩展这些API以实现所需的功能。
-			    我们目前提供了Activiti Bpmn建模扩展。
 			    </p>
+			    
+			    <div class="page-header">
+			      <h1 id="browsers">浏览器支持</h1>
+			    </div>
+			    <img src="images/ie.png" style="margin-right:10px"><img src="images/firefox.png" style="margin-right:10px"><img src="images/safari.png" style="margin-right:10px">
+			    <img src="images/chrome.png" style="margin-right:10px"><img src="images/opera.png">
 			    <p>
-			      
+			    *在IE6-IE8下，如果搭配其他复杂的前端UI（例如ExtJS）XModeler的性能表现不佳，此时请尽量使用其他版本的浏览器。
+			    </p>
+			    
+			    <div class="page-header">
+			      <h1 id="license-faqs">许可证FAQ</h1>
+			    </div>
+			    <p class="lead">XModeler遵守LGPL许可证进行分发，版权归石家庄鸿坤网络科技有限公司所有。归结为以下几点：</p>
+			    <div class="row">
+				      <div class="col-12 col-lg-6">
+				        <h4>允许你：</h4>
+				        <ul>
+				          <li>自由的下载并使用部分或完整的XModeler框架，允许用于私人、公司内部或商业目的</li>
+				          <li>将XModeler放入你自己创建的安装包或分发中</li>
+				        </ul>
+				      </div>
+				      <div class="col-12 col-lg-6">
+				        <h4>禁止你：</h4>
+				        <ul>
+				          <li>在没有合适的权力声明的情况下重新分发XModeler的任意部分</li>
+				        </ul>
+				      </div>
+				</div>
+				
+				<div class="row">
+			      <div class="col-12 col-lg-6">
+			        <h4>需要你：</h4>
+			        <ul>
+			          <li>在包含了XModeler的分发中包含一份许可证文件</li>
+			          <li>如果对XModeler进行了任何的扩张或者修改，那么你所扩展或者修改的代码必须遵循LGPL协议，并确保您的代码是可以获取的。</li>
+			        </ul>
+			      </div>
+			      <div class="col-12 col-lg-6">
+			        <h4>不需要你：</h4>
+			        <ul>
+			          <li>在分发中包含XModeler源码或你对其进行的任何修改</li>
+			          <li>在使用（而非扩展或者修改）了XModeler框架及其扩展的应用中使用LGPL协议。</li>
+			        </ul>
+			      </div>
+			    </div>
+			    <p>
 			    </p>
 		    </div>
 			
 			</div>
 		</div>
 	</div>
+<!-- ////////////////////////Footer//////////////////////// -->
+<footer class="bs-footer" role="contentinfo">
+      <div class="container">
+        <p>Code licensed under <a href="http://www.gnu.org/licenses/lgpl.html" target="_blank">LGPL 3</a>.</p>
+        <p>XModeler版权归<a href="http://www.honqun.com/">石家庄鸿坤网络科技有限公司</a>及<a href="catstiger@gmail.com">Catstiger</a>所有。</p><p>
+        </p>
+        <ul class="footer-links">
+          <li>当前版本： v1.0.2</li>
+        </ul>
+      </div>
+</footer>
+
+
 <script src="http://cdn.bootcss.com/holder/2.0/holder.min.js"></script>
 <script src="http://cdn.bootcss.com/highlight.js/7.3/highlight.min.js"></script>
 <script >hljs.initHighlightingOnLoad();</script>
@@ -285,6 +337,8 @@ $(function() {
 <script src="js/code/mode/xml/xml.js"></script>
 <script src="js/code/mode/htmlmixed/htmlmixed.js"></script>
 <script src="js/code/mode/javascript/javascript.js"></script>
+
+<script type="text/javascript" src="js/application.js"></script>
 <script type="text/javascript">
 $(function() {
   $('textarea').each(function() {
