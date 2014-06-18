@@ -105,6 +105,18 @@ ul li b {
 			<p>Activiti是一个轻量级工作流程和业务流程引擎，它基于Java可以在任何平台下运行。Activiti提供了Eclipse和Web建模工具，但是它很难扩展和整合。
 			因此，我们在XModeler基础引擎上进行了扩展，使得任何基于Java的应用可以方便的整合Activity BPMN建模工具。
 			</p>
+			<h2>Features</h2>
+			<ul style="font-size:14px;">
+			    <li>支持开始事件(StartEvent)、结束事件(End Event)、任务(Task)、子流程(Sub Process)、顺序流(Sequence Flow)、计时器事件(Timer Event)。</li>
+			    <li>可以方便的进行扩展，以支持其他类型的节点。</li>
+			    <li>支持上下文菜单操作和菜单操作，使用键盘可以移动节点或者删除节点。</li>
+			    <li>支持节点选择，在节点选择事件中提供被选中节点的全部属性。</li>
+			    <li>支持从服务器端加载Json数据（符合Activiti Json Converter）。</li>
+			    <li>将绘制的流程图转换为符合Activity Json Converter格式的Json，并提交至服务器端。</li>
+			    <li>支持各种节点的各种属性，包括表单绑定等。您可以自由扩展这些属性。</li>
+			    <li>只读(read-only)模式，用于查看流程的运行状态，在只读模式下不可对流程图进行编辑，但是仍然能够响应一些事件。</li>
+			    <li>静默(mute)模式，类似于只读模式，但是不响应事件。</li>
+			</ul>
 		</div>
 	</div>
 	<div class="container bs-docs-container">
@@ -256,14 +268,52 @@ $('.bpmn-btn').each(function() {//为每一个工具条按钮绑定click事件
 			    <h2>图标</h2>
 			    <p>
 			      在XModeler Activiti BPMN所绘制的图形上，都有一些图标，这些图标定义在themes/default/images下，XModeler通过引用Icons对象使用
-			      这些图标。因此
+			      这些图标。因此如果修改图标，您需要修改themes/default/Icons.js文件。<span style="color:#aa0000;">特别需要注意的是，Icons对象中
+			      的图标路径都是相对于<b>引用XModeler对象的页面</b>，如果您希望在任何页面都可以正常显示图标，那么需要将Icons中的路径改为绝对路径，这样才能确保找到这些图标。</span>
+			      <textarea  mode="javascript">
+var Icons = function() {
+	
+};
+//绝对路径可以保证在任何页面都可以正确显示图标
+Icons.startEvent = '/xmodeler/themes/default/images/start.png';
+Icons.endEvent = '/xmodeler/themes/default/images/end.png';
+Icons.errorEndEvent = '/xmodeler/themes/default/images/error-end.png';
+Icons.timerEvent = '/xmodeler/themes/default/images/timer_event.png';
+Icons.exclusiveGateway = '/xmodeler/themes/default/images/exclusive-gateway.png';
+Icons.parallelGateway = '/xmodeler/themes/default/images/parallel_gateway.png';
+Icons.userTask = '/xmodeler/themes/default/images/user.png';
+Icons.scriptTask = '/xmodeler/themes/default/images/script.png';
+Icons.serviceTask = '/xmodeler/themes/default/images/service.png';
+Icons.plus = '/xmodeler/themes/default/images/plus.png';
+Icons.minus = '/xmodeler/themes/default/images/minus.png';
+Icons.plug = '/xmodeler/themes/default/images/plug_blue.gif';
+Icons.plugDisable = '/xmodeler/themes/default/images/plug_disable.gif';
+	            </textarea>
 			    </p>
 			    <p>
 			      <h2>国际化</h2>
 			    </p>
 			    <p>
-			      <h2>定制背景和上下文菜单样式</h2>
+			      所谓的国际化，主要是定义各种节点的缺省名字(name)。
+			      在src/impl/locale定义了两种语言，分别是中文和英文，如果您需要支持其他语言<b>或者您不喜欢现有语言中的那些名字</b>，可以在此基础上进行修改。
 			    </p>
+			    
+			    <div class="page-header">
+			      <h1 id="load-from-server">从服务器端加载流程图</h1>
+			    </div>
+			    
+			    
+			    <div class="page-header">
+			      <h1 id="post-to-server">从服务器端加载流程图</h1>
+			    </div>
+			    
+			    <div class="page-header">
+			      <h1 id="#events">事件响应</h1>
+			    </div>
+			    
+			    <div class="page-header">
+			      <h1 id="node-properties">节点属性</h1>
+			    </div>
 		    </div>
 			
 			</div>
