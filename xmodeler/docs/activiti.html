@@ -298,14 +298,114 @@ Icons.plugDisable = '/xmodeler/themes/default/images/plug_disable.gif';
 			      在src/impl/locale定义了两种语言，分别是中文和英文，如果您需要支持其他语言<b>或者您不喜欢现有语言中的那些名字</b>，可以在此基础上进行修改。
 			    </p>
 			    
+			    
+			    
+			    
 			    <div class="page-header">
 			      <h1 id="load-from-server">从服务器端加载流程图</h1>
 			    </div>
-			    
+			    <p>
+			    XModeler是一个纯JavaScript框架，不包含任何服务器端代码。但是，因为涉及到了Activiti，因此，需要将XModeler Activit扩展与Activiti服务器端整合的方法
+			    进行详细的介绍。这里只是描述如何将Activiti Bpmn Model 与XModeler Json模型互相转换，并未涉及任何Activiti的概念和使用方法。
+			    </p>
+			    <p>
+			    首先介绍如何将Activiti Bpmn Model转换为XModeler Json所需的Json，Activiti提供了BpmnModel对象，用于描述一个流程，这个对象可以根据processDefinitionId获得。
+			    在服务器端我们只需要将BpmnModel对象转换为Json，并返回给浏览器就可以了。BpmnModel是一个非常复杂的对象，转换过程中会出现递归死循环的情况，需要程序员
+			    认真处理。
+			    </p>
+			    <textarea mode="javascript">
+/**
+   * 根据Process Definition Id获取BpmnModel的实例
+   */
+  public BpmnModel bpmnModelByProcDefId(String processDefinitionId) throws Exception {
+    BpmnModel bpmnModel = processEngine.getRepositoryService().getBpmnModel(processDefinitionId);
+    //上面的BpmnModel对象并未包含任何关于节点类型的数据，因此，我们需要解析部署XML文件，找到节点类型。
+    String deployXml = getDeploymentXML(processDefinitionId);
+
+    Map<String, String> namespaces = new HashMap<String, String>();
+    namespaces.put("MODEL", "http://www.omg.org/spec/BPMN/20100524/MODEL");
+
+    SAXReader saxReader = new SAXReader();
+    saxReader.getDocumentFactory().setXPathNamespaceURIs(namespaces);
+    Document doc = saxReader.read(new StringReader(deployXml));
+
+    List nodes = doc.selectNodes("//MODEL:process/*");
+    for (Iterator itr = nodes.iterator(); itr.hasNext();) {
+      Element element = (Element) itr.next();
+      extractItemDefinition(element, bpmnModel);
+    }
+    return bpmnModel;
+  }
+  
+  /**
+   * 得到部署的流程的XML文本
+   */
+  private String getDeploymentXML(String processDefinitionId) throws Exception {
+    BpmnModel bpmnModel = processEngine.getRepositoryService().getBpmnModel(processDefinitionId);
+    byte[] xml = new BpmnXMLConverter().convertToXML(bpmnModel, "UTF-8");
+    String deployXml = new String(xml, "UTF-8");
+    //convertToXML方法有BUG，生成的XML的namespace和元素属性是重复的，因此——
+    //修正XML中重复的namespace和属性，因为我的方法难登大雅，就不现了。
+    return fixXml(deployXml);
+  }
+  
+  /**
+   * 从Element对象中，提取对象类型，RepositoryService不能提供各个节点的类型，这里搞定
+   */
+  private void extractItemDefinition(Element element, BpmnModel bpmnModel) {
+    Attribute idAttr = element.attribute("id");
+    if (idAttr != null && StringUtils.isNotBlank(idAttr.getValue())) {
+      ItemDefinition itemDefinition = new ItemDefinition();
+      itemDefinition.setId(idAttr.getValue());
+      String name = element.getName().substring(0, 1).toUpperCase() + element.getName().substring(1);
+      itemDefinition.setItemKind(name);
+      bpmnModel.addItemDefinition(idAttr.getValue(), itemDefinition);
+      //处理子流程
+      if (StringUtils.equals(BpmnXMLConstants.ELEMENT_SUBPROCESS, element.getName())) {
+        for (Iterator eleItr = element.elementIterator(); eleItr.hasNext();) {
+          Element subEle = (Element) eleItr.next();
+          extractItemDefinition(subEle, bpmnModel);
+        }
+      }
+    }
+  }
+  
+			    </textarea>
+			    <p>
+			    得到BpmnModel对象之后，就可以使用任意Java MVC框架结合JacksonJson之类的工具，将它转换为Json数据，并返回给浏览器。需要注意的是
+			    BpmnModel对象涉及大量的循环引用，转换的时候应避免死循环。
+			    </p>
+			    <p>
+			    在JavaScript里面，我们调用服务器端的上述服务，就可以加载流程图了。
+			    </p>
+			    <textarea mode="javascript">
+/**
+* 从服务器端加载流程图
+* @param activityEngine ActivityEngine对象，通过new ActivityEngine创建。
+* @param processDefinitionId  流程定义ID，请参考Activiti相关文档。
+*/
+function loadBpmn(activityEngine, processDefinitionId) {
+	var activitiAdapter = new ActivityAdapter();
+	activitiAdapter.load(acitivityEngine, {
+	  processDefinitionId : processDefinitionId,
+	  queryUrl : 'URL_TO_LOAD_BPMN_JSON', //可以访问到BpmnModel Json的URL
+	  /*
+	  * 加载成功后的回调函数
+	  * @param bpmnModel 符合Activity Json Converter要求的对象，注意，这与服务器端返回的对象是不同的。
+	  */
+	  loadSuccess : function(bpmnModel) { 
+	  },
+	  loadFailed : function() {
+		alert('流程加载失败！');
+	  }
+	});
+}
+			    </textarea>
 			    
 			    <div class="page-header">
-			      <h1 id="post-to-server">从服务器端加载流程图</h1>
+			      <h1 id="post-to-server">向服务器端提交流程图</h1>
 			    </div>
+			    
 			    
 			    <div class="page-header">
 			      <h1 id="#events">事件响应</h1>
