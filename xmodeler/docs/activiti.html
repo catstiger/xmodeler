@@ -146,6 +146,7 @@ ul li b {
 			    </p>
 			    
 			    <p>首先在您的页面中加入XModeler及其依赖。</p>
+			    <div class="highlight">
 			    <textarea model="htmlmixed">
 <!--[if lte IE 8]>
 <script type="text/javascript" src="../lib/ie/excanvas.js"></script>
@@ -167,14 +168,19 @@ ul li b {
 <link rel="stylesheet" type="text/css" href="../themes/default/css/style.css">
 <script type="text/javascript" src="../themes/default/Icons.js"></script>
 			    </textarea>
+			    </div>
 			    <br>
+			    
 			    <p>声明一个DIV（或者其他DOM），作为XModeler的容器。</p>
+			    <div class="highlight">
 			    <textarea  mode="htmlmixed">
 <div  id="bpm" class="canvas" style="height:360px;"></div>
 			     </textarea>
+			     </div>
 			    </div>
 			    <br>
 			    <p>最后在Onload事件中创建Bpmn对象。</p>
+			    <div class="highlight">
 			    <textarea mode="javascript">
 $(function() {
 	var bpm = new ActivityEngine({ //使用Activity Bpmn实现
@@ -182,6 +188,7 @@ $(function() {
 	});
 });
 			    </textarea>
+			    </div>
 			    <br>
 			    <p>
 			    此时，XModeler Activiti流程图对象已经创建完成，页面上会看到一个由浅黄色网格作为背景（可以修改style.css修改这个样式）的区域，这就是绘图区。您可以通过
@@ -199,6 +206,7 @@ $(function() {
 			    我们采用Bootstrap的导航条作为工具条。<br>
 			    首先，您要定义工具条：
 			    </p>
+			    <div class="highlight">
 			    <textarea  mode="htmlmixed">
 <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
 <ul class="nav navbar-nav">
@@ -234,9 +242,11 @@ $(function() {
    </ul>
  </nav>
 			    </textarea>
+			    </div>
 			    <p>
 			    然后，我们为菜单绑定事件。
 			    </p>
+			    <div class="highlight">
 			    <textarea  mode="javascript">
 $('.bpmn-btn').each(function() {//为每一个工具条按钮绑定click事件
     $(this).click(function(e) {
@@ -245,6 +255,7 @@ $('.bpmn-btn').each(function() {//为每一个工具条按钮绑定click事件
 	});
 });
 	            </textarea>
+	            </div>
 			    <p>
 			    每一个按钮事件都非常简单，实际上，工具条按钮点击的时候只是为XModeler设定了活动状态，这些活动状态包括：
 			    <ul>
@@ -270,6 +281,7 @@ $('.bpmn-btn').each(function() {//为每一个工具条按钮绑定click事件
 			      在XModeler Activiti BPMN所绘制的图形上，都有一些图标，这些图标定义在themes/default/images下，XModeler通过引用Icons对象使用
 			      这些图标。因此如果修改图标，您需要修改themes/default/Icons.js文件。<span style="color:#aa0000;">特别需要注意的是，Icons对象中
 			      的图标路径都是相对于<b>引用XModeler对象的页面</b>，如果您希望在任何页面都可以正常显示图标，那么需要将Icons中的路径改为绝对路径，这样才能确保找到这些图标。</span>
+			      <div class="highlight">
 			      <textarea  mode="javascript">
 var Icons = function() {
 	
@@ -289,6 +301,7 @@ Icons.minus = '/xmodeler/themes/default/images/minus.png';
 Icons.plug = '/xmodeler/themes/default/images/plug_blue.gif';
 Icons.plugDisable = '/xmodeler/themes/default/images/plug_disable.gif';
 	            </textarea>
+	            </div>
 			    </p>
 			    <p>
 			      <h2>国际化</h2>
@@ -313,6 +326,7 @@ Icons.plugDisable = '/xmodeler/themes/default/images/plug_disable.gif';
 			    在服务器端我们只需要将BpmnModel对象转换为Json，并返回给浏览器就可以了。BpmnModel是一个非常复杂的对象，转换过程中会出现递归死循环的情况，需要程序员
 			    认真处理。
 			    </p>
+			    <div class="highlight">
 			    <textarea mode="javascript">
 /**
    * 根据Process Definition Id获取BpmnModel的实例
@@ -371,6 +385,7 @@ Icons.plugDisable = '/xmodeler/themes/default/images/plug_disable.gif';
   }
   
 			    </textarea>
+			    </div>
 			    <p>
 			    得到BpmnModel对象之后，就可以使用任意Java MVC框架结合JacksonJson之类的工具，将它转换为Json数据，并返回给浏览器。需要注意的是
 			    BpmnModel对象涉及大量的循环引用，转换的时候应避免死循环。
@@ -378,6 +393,7 @@ Icons.plugDisable = '/xmodeler/themes/default/images/plug_disable.gif';
 			    <p>
 			    在JavaScript里面，我们调用服务器端的上述服务，就可以加载流程图了。
 			    </p>
+			    <div class="highlight">
 			    <textarea mode="javascript">
 /**
 * 从服务器端加载流程图
@@ -401,18 +417,171 @@ function loadBpmn(activityEngine, processDefinitionId) {
 	});
 }
 			    </textarea>
-			    
+			    </div>
 			    <div class="page-header">
 			      <h1 id="post-to-server">向服务器端提交流程图</h1>
 			    </div>
-			    
-			    
+			    <p>
+			    与加载BPMN相反，提交流程图是将客户端提交的Json数据转换为BpmnModel对象，并部署。BpmnModel对象十分复杂，幸好Activiti提供了BpmnJsonConverter类，
+			    可以方便的将Json数据转换为BpmnModel对象。
+			    </p>
+			    <div class="highlight">
+			    <textarea mode="javascript">
+  /**
+   * 部署JSON格式的Activiti流程定义
+   * 
+   * @param name  流程名称
+   * @param json JSON文本
+   * @return return Instance of Deployment
+   */
+  public Deployment deployJson(String name, String json) throws Exception {
+    //转换为BpmnModel对象
+    JsonNode modelNode = new ObjectMapper().readTree(json);
+    BpmnModel bpmnModel = new BpmnJsonConverter().convertToBpmnModel(modelNode);
+    //得到部署的XML
+    byte[] xml = new BpmnXMLConverter().convertToXML(bpmnModel);
+    String deployXml = new String(xml, "UTF-8");
+    //部署
+    DeploymentBuilder deploymentBuilder = processEngine.getRepositoryService().createDeployment();
+    deploymentBuilder.name(name).addString(name + ".bpmn", xml);
+    return deploymentBuilder.deploy();
+  }
+			    </textarea>
+			    </div>
+			    <p>
+			    上述代码可以在任意的Java MVC框架中调用，下面我们看Javascript代码。
+			    </p>
+			    <div class="highlight">
+			    <textarea mode="javascript">
+//activityEngine通过前面的new ActivityEngine({selector : #some_dom});创建
+activityEngine.raw.process_id = "process_key"; //Process Id,即Process Key，是必须的。
+activityEngine.raw.name = "process_name"; //Process Name，部署时的资源名称
+var bpmnObject = activityEngine.rawObject();
+$.ajax({
+		url : 'URL_TO_DEPLOY_SERVICE',
+		params : {
+			text : $.stringify(bpmnObject), //text是Http Request参数名称，可以任意
+			name : activityEngine.raw.name
+		},
+		success : function(resp) {
+			//部署成功
+		},
+		failure : function() {
+			//部署失败
+		}
+});
+			    </textarea>
+			    </div>
 			    <div class="page-header">
 			      <h1 id="#events">事件响应</h1>
 			    </div>
 			    
+			    <h2>click事件</h2>
+			    <p>
+			    click事件是最常用的事件，当点击XModeler绘图区域的时候响应。如果此时点击了绘图区域中的某个元素，
+			    则事件响应函数的参数就是这个元素的对象。<br>
+			    参数列表：
+			    </p>
+			    <ul>
+			      <li>event，HTML事件对象。</li>
+			      <li>selections，如果没有选择任何元素，则为undefined；如果选择多个对象，则为数组；如果选择一个对象，则为该对象。</li>
+			    </ul>
+			    <div class="highlight">
+			    <textarea mode="javascript">
+var activityEngine = new ActivityEngine({
+	selector : $("#some_id").eq(),
+	fit : true,
+	raw : null,
+	listeners : {
+	  click : function(event, selections) {
+	    console.log(selections);
+	  }
+	}
+});
+			    </textarea>
+			    </div>
+			    
 			    <div class="page-header">
 			      <h1 id="node-properties">节点属性</h1>
+			    </div>
+			    <p>
+			    XModeler-Activity的每一个元素，包括XModoler-Activity本身，都包括3个主要属性。（其实还有很多属性，但是作为流程开发的属性这3个就够了。）
+			    </p>
+			    <h2>id</h2>
+			    <p>
+			    每一个节点都有一个id属性，它是唯一的，当新增一个节点的时候，XModeler会自动为该节点分配一个id。一般来说，没有必要修改这个属性。
+			    </p>
+			    <h2>name</h2>
+			    <p>
+			    每一个节点都有一个name属性，这个属性也是Activity节点的name。
+			    </p>
+			    <h2>raw</h2>
+			    <p>
+			    哇，这个属性对应着Actvity每一个节点的属性，也就是说，每一个节点的raw属性都是一个对象，而且各不相同，这个对象的属性是与Activiti Json Converter一致的。
+			    在各个节点的实现类中，都提供一个rawObject函数，在这个函数中，定义了raw属性的格式，下面我们一个一个的介绍这些节点的属性(以及如何获取和设置这些属性)。
+			    </p>
+			    <p style="color:#c00;font-weight:bold;">如何设置和获取StartEvent的属性</p>
+			    首先你需要一个两个form，一个form代表Start Event基本属性，另一个代表着绑定在Start Event的表单项。
+			    <div class="highlight">
+			    <textarea mode="htmlmixed">
+<!-- Start Event属性，每一个input代表一个属性，name与Activiti Json要求一致-->
+<h3>属性</h3>
+<form id="form-start-event">
+   <input name="id" type="hidden" value="">
+   <input name="initiator" type="hidden" value="">
+   <div>
+   名称：<input name="name" type="text" value="start">
+   </div>
+   <div>
+   表单：<input name="formkeydefinition" type="表单Key">
+   </div>
+</form>
+
+<!-- Start Event可以绑定表单项，我们为每一个表单项建立一个form -->
+<h3>表单绑定：</h3>
+<form class="form-start-event-formproperties">
+   <div>
+   表单ID：<input name="formproperty_id" type="text" value="some_id_1">表单名称：<input name="formproperty_name" type="text" value="some_prop_1">
+   </div>
+ </form>
+<form class="form-start-event-formproperties">
+   <div>
+   表单ID：<input name="formproperty_id" type="text" value="some_id_2">表单名称：<input name="formproperty_name" type="text" value="some_prop_2">
+   </div>
+</form>
+			    </textarea>
+			    </div>
+			    <p>
+			    然后需要将form中的数据提取出来，组成符合Activity要求的对象格式。
+			    </p>
+			    <div class="highlight">
+			    <textarea mode="javascript">
+function toActivity() {
+  var obj = {};
+  //将Form组成一个Object
+  $('#form-start-event input').each(function() {
+    var _this = $(this);
+    obj[_this.attr('name')] = _this.val();
+  });
+  
+  
+  var props = [];
+  $('.form-start-event-formproperties').each(function() {
+    var prop = {};
+    $(this).find('input').each(function() {
+      var _this = $(this);
+      prop[_this.attr('name')] = _this.val();
+    });
+    props.push(prop);
+  });
+  
+  obj.formproperties = {
+      totalCount : props.length,
+      items : props
+  };
+  return obj;
+}
+			    </textarea>
 			    </div>
 		    </div>
 			
