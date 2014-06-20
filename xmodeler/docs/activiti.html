@@ -541,6 +541,9 @@ var activityEngine = new ActivityEngine({
 			    </p>
 			    <div class="highlight">
 			    <textarea mode="javascript">
+/**
+*
+*/
 function toActivity() {
   var obj = {};
   //将Form组成一个Object
@@ -550,6 +553,25 @@ function toActivity() {
   });
   
   return obj;
+}
+			    </textarea>
+			    </div>
+			    
+			    <p>
+			    将Activiti中的数据转换为Form数据：
+			    </p>
+			    <div class="highlight">
+			    <textarea mode="javascript">
+/**
+* 所有节点（包括流程图本身）中的raw属性，保存的就是Activiti Json Conveter要求的属性
+*/
+function fromActivity(activityEngine) {
+  if(activityEngine) {
+    var props = activityEngine.raw;
+    for(var prop in props) {
+      $('#process_form input[name=' + prop + ']').val(props[prop]);
+    }
+  }
 }
 			    </textarea>
 			    </div>
@@ -586,7 +608,7 @@ function toActivity() {
 			    </textarea>
 			    </div>
 			    <p>
-			    然后需要将form中的数据提取出来，组成符合Activity要求的对象格式。
+			    将form中的数据提取出来，组成符合Activity StartEvent 节点要求的对象格式。
 			    </p>
 			    <div class="highlight">
 			    <textarea mode="javascript">
@@ -598,7 +620,7 @@ function toActivity() {
     obj[_this.attr('name')] = _this.val();
   });
   
-  
+  //绑定属性
   var props = [];
   $('.form-start-event-formproperties').each(function() {
     var prop = {};
@@ -614,6 +636,27 @@ function toActivity() {
       items : props
   };
   return obj;
+}
+			    </textarea>
+			    </div>
+			    
+			    
+			    <p>
+			    将Activity StartEvent 节点数据加载到form中。
+			    </p>
+			    <div class="highlight">
+			    <textarea mode="javascript">
+function fromActivity(node) {
+  for(var prop in node.raw) {
+    if(prop != 'formproperties') {
+      $('#form-start-event input[name=' + prop + ']').val(node.raw[prop]);
+    } else {
+      for(var i = 0; i < node.raw.formproperties.items.length; i++) {
+        $('input[name=formproperty_id]').get(i).value = node.raw.formproperties.items[i]['formproperty_id'];
+        $('input[name=formproperty_name]').get(i).value = node.raw.formproperties.items[i]['formproperty_name'];
+      }
+    }
+  }
 }
 			    </textarea>
 			    </div>

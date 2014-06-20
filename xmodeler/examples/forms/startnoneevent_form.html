@@ -67,6 +67,7 @@ function toActivity() {
       totalCount : props.length,
       items : props
   };
+  console.log(obj)
   return obj;
 }
 
@@ -75,9 +76,9 @@ function fromActivity(node) {
     if(prop != 'formproperties') {
       $('#form-start-event input[name=' + prop + ']').val(node.raw[prop]);
     } else {
-      for(var i = 0; i <node.raw.formproperties.items.length; i++) {
-        $('#formproperty_id').get(0).val(node.raw.formproperties.items[0]['formproperty_id']);
-        $('#formproperty_name').get(0).val(node.raw.formproperties.items[0]['formproperty_name']);
+      for(var i = 0; i < node.raw.formproperties.items.length; i++) {
+        $('input[name=formproperty_id]').get(i).value = node.raw.formproperties.items[i]['formproperty_id'];
+        $('input[name=formproperty_name]').get(i).value = node.raw.formproperties.items[i]['formproperty_name'];
       }
     }
   }
