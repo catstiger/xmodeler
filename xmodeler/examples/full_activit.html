@@ -113,19 +113,30 @@ $(function() {
 			    if($('#formsA').attr('src') == "forms/process_form.html") {
 			      activityEngine.raw = formsA.toActivity();
 			    } 
-				if(selections) {
+				if(selections) { //这是选中节点的数组或者对象
 				  var node;
 				  if($.isArray(selections)) {
 					node = selections[0];
 			      } else {
 					node = selections;
 				  }
-				  
-				  if(currentNode) {
+				 
+				  if(currentNode) { //将当前form中的数据存入当前节点
 					  currentNode.raw = formsA.toActivity();
+				      if(currentNode.raw.name) {
+				        currentNode.name = currentNode.raw.name;
+				      }
+				      if(currentNode.raw.id) {
+				        currentNode.id = currentNode.raw.id;
+				      }
 				  } 
+				  //记录当前选择的节点
 				  currentNode = node;
+				  //根据当前节点，加载不同form
 				  $('#formsA').attr('src', "forms/" + currentNode.rawType.toLowerCase() + "_form.html");
+				  window.setTimeout(function() {
+				    formsA.fromActivity(currentNode)
+				  }, 500);
 				} 
 				else { //当没有选择任何节点的时候，显示流程本身的属性
 				  currentNode = null;
