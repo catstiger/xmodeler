@@ -1,11 +1,7 @@
 <!DOCTYPE html>
-<html lang="zh_cn">
+<html>
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=Edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="UTF-8">
-
 <!--[if lte IE 8]>
 <script type="text/javascript" src="../lib/ie/excanvas.js"></script>
 <script type="text/javascript" src="../lib/ie/canvas.text.js"></script>
@@ -26,8 +22,142 @@
 <link rel="stylesheet" type="text/css" href="../themes/default/css/style.css">
 <script type="text/javascript" src="../themes/default/Icons.js"></script>
 
-</head>
-<body>
 
+<title>BPM Examples</title>
+<style type="text/css">
+#bpm {	
+}
+#pos {
+    margin:10px; 
+    padding:3px;
+    color:#333;
+}
+
+</style>
+</head>
+<body style="background-color:#eee;">
+
+<header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">
+  <div class="container">
+    <div class="navbar-header">
+      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="../docs/index.html" class="navbar-brand"><img src="../docs/images/logo32.png" style="width:24px;"/>&nbsp;XModeler</a>
+    </div>
+    <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+      <ul class="nav navbar-nav">
+        <li>
+        <a class='bpmn-btn' id="addStartEvent">开始事件</a>
+        </li>
+        <li>
+		<a class='bpmn-btn' id="addEndEvent">结束事件</a>
+		</li>
+        <li>
+		<a class='bpmn-btn' id="addUserTask">手工任务</a>
+		</li>
+        <li>
+		<a class='bpmn-btn' id="addServiceTask">服务任务</a>
+		</li>
+        <li>
+		<a class='bpmn-btn' id="addScriptTask">脚本任务</a>
+		</li>
+        <li>
+		<a class='bpmn-btn' id="addParallelGateway">平行网关</a>
+		</li>
+        <li>
+		<a class='bpmn-btn' id="addExclusiveGateway">排他网关</a>
+		</li>
+        <li>
+		<a class='bpmn-btn' id="addSubProcess">子流程</a>
+		</li>
+        <li>
+		<a class='bpmn-btn' id="addTimerEvent">定时边界事件</a>
+		</li>
+        <li>
+		<a class='bpmn-btn' id="addConnection">顺序流</a>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<div class="container bs-docs-container">
+	<div class="row">
+	    <br><br><br>
+		<div  id="bpm" class='canvas' style="margin-top:10px;height:300px;"></div>
+		<input type="checkbox" id="readonly">只读模式
+		
+		<div style="padding:5px;">
+		<iframe src="forms/process_form.html" frameborder="0" style="width:100%;height:300px;" name="formsA" id="formsA"></iframe>
+		</div>
+	</div>
+</div>	
+
+
+<div style="color:#aa0000">注意，Chrome浏览器不行呀。</div>
+
+
+<script type="text/javascript">
+$(function() {
+   var currentNode;
+	var activityEngine = new ActivityEngine({
+		selector : '#bpm',
+		fit : false,
+		raw : null,
+		listeners : {
+			click : function(event, selections) {
+			    //保存Activity流程图本身的属性
+			    if($('#formsA').attr('src') == "forms/process_form.html") {
+			      activityEngine.raw = formsA.toActivity();
+			    } 
+				if(selections) {
+				  var node;
+				  if($.isArray(selections)) {
+					node = selections[0];
+			      } else {
+					node = selections;
+				  }
+				  
+				  if(currentNode) {
+					  currentNode.raw = formsA.toActivity();
+				  } 
+				  currentNode = node;
+				  $('#formsA').attr('src', "forms/" + currentNode.rawType.toLowerCase() + "_form.html");
+				} 
+				else { //当没有选择任何节点的时候，显示流程本身的属性
+				  currentNode = null;
+				  $('#formsA').attr('src', "forms/process_form.html");
+				  //等待表单加载完毕，呵呵这个办法比较笨，凑合着看吧
+				  window.setTimeout(function() {
+				    formsA.fromActivity(activityEngine)
+				  }, 500);
+				}
+			}
+		}
+	});
+	//为菜单绑定事件
+	$('.bpmn-btn').each(function() {
+	  $(this).click(function(e) {
+	    activityEngine.setAction(this.id);
+	    e.preventDefault();
+	  });
+	});
+	
+	 $('#actions').change(function() {
+		activityEngine.setAction(this.value);		
+	 });
+	 
+	 $('#readonly').click(function() {
+		activityEngine.setReadonly(this.checked);
+	});
+	
+	 $('#test').bind('mousemove', function(e) {
+	    //console.log(e);
+	 });
+});
+</script>
 </body>
 </html>

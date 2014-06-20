@@ -520,6 +520,40 @@ var activityEngine = new ActivityEngine({
 			    哇，这个属性对应着Actvity每一个节点的属性，也就是说，每一个节点的raw属性都是一个对象，而且各不相同，这个对象的属性是与Activiti Json Converter一致的。
 			    在各个节点的实现类中，都提供一个rawObject函数，在这个函数中，定义了raw属性的格式，下面我们一个一个的介绍这些节点的属性(以及如何获取和设置这些属性)。
 			    </p>
+			    
+			   <p style="color:#c00;font-weight:bold;">如何设置和获取流程图的属性</p>
+			   我们先介绍如何存取流程图本身的属性，设置和获取流程图属性需要一个Form，至于这个Form如何实现可以根据您的喜好，这里需要注意的是Form中输入框的name属性
+			   和存取这些属性的方法。
+			   <div class="highlight">
+			    <textarea mode="htmlmixed">
+<form id="process_form">
+    <div>流程Key：<span style='color:red;'>*</span>：<input type="text" name="process_key"></div>
+    <div>流程名称：<input type="text" name="name"></div>
+    <div>Name_Space：<input type="text" name="process_namespace"></div>
+    <div>启动流程的用户：<input type="text" name="candidateStarterUsers"></div>
+    <div>启动流程的角色：<input type="text" name="candidateStarterGroups"></div>
+    <div>流程描述：<input type="text" name="documentation"></div>
+</form>
+			    </textarea>
+			    </div>
+			    <p>
+			    将Form中的数据转换为Activiti所需数据：
+			    </p>
+			    <div class="highlight">
+			    <textarea mode="javascript">
+function toActivity() {
+  var obj = {};
+  //将Form组成一个Object
+  $('#process_form input').each(function() {
+    var _this = $(this);
+    obj[_this.attr('name')] = _this.val();
+  });
+  
+  return obj;
+}
+			    </textarea>
+			    </div>
+			    
 			    <p style="color:#c00;font-weight:bold;">如何设置和获取StartEvent的属性</p>
 			    首先你需要一个两个form，一个form代表Start Event基本属性，另一个代表着绑定在Start Event的表单项。
 			    <div class="highlight">
