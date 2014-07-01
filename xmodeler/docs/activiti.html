@@ -527,12 +527,32 @@ var activityEngine = new ActivityEngine({
 			   <div class="highlight">
 			    <textarea mode="htmlmixed">
 <form id="process_form">
-    <div>流程Key：<span style='color:red;'>*</span>：<input type="text" name="process_key"></div>
-    <div>流程名称：<input type="text" name="name"></div>
-    <div>Name_Space：<input type="text" name="process_namespace"></div>
-    <div>启动流程的用户：<input type="text" name="candidateStarterUsers"></div>
-    <div>启动流程的角色：<input type="text" name="candidateStarterGroups"></div>
-    <div>流程描述：<input type="text" name="documentation"></div>
+    <table style="width:100%;">
+        <tr>
+            <td style="width:150px;">流程Key：<span style='color:red;'>*</span>：</td>
+            <td><input type="text" name="process_key"></td>
+        </tr>
+        <tr>
+            <td style="width:150px;">流程名称：</td>
+            <td><input type="text" name="name"></td>
+        </tr>
+        <tr>
+            <td style="width:150px;">Name_Space：</td>
+            <td><input type="text" name="process_namespace"></td>
+        </tr>
+        <tr>
+            <td style="width:150px;">启动流程的用户：</td>
+            <td><input type="text" name="candidateStarterUsers"></td>
+        </tr>
+        <tr>
+            <td style="width:150px;">启动流程的角色：</td>
+            <td><input type="text" name="candidateStarterGroups"></td>
+        </tr>
+        <tr>
+            <td style="width:150px;">流程描述：</td>
+            <td><input type="text" name="documentation"></td>
+        </tr>
+    </table>
 </form>
 			    </textarea>
 			    </div>
@@ -542,7 +562,7 @@ var activityEngine = new ActivityEngine({
 			    <div class="highlight">
 			    <textarea mode="javascript">
 /**
-*
+* 将表单中的数据转换为流程属性
 */
 function toActivity() {
   var obj = {};
@@ -581,28 +601,26 @@ function fromActivity(activityEngine) {
 			    <div class="highlight">
 			    <textarea mode="htmlmixed">
 <!-- Start Event属性，每一个input代表一个属性，name与Activiti Json要求一致-->
-<h3>属性</h3>
 <form id="form-start-event">
    <input name="id" type="hidden" value="">
    <input name="initiator" type="hidden" value="">
    <div>
-   名称：<input name="name" type="text" value="start">
+   节点名称：<input name="name" type="text" >
    </div>
    <div>
-   表单：<input name="formkeydefinition" type="表单Key">
+   绑定表单：<input name="formkeydefinition" type="表单Key">
    </div>
 </form>
 
-<!-- Start Event可以绑定表单项，我们为每一个表单项建立一个form -->
-<h3>表单绑定：</h3>
+<h3>表单字段：</h3>
 <form class="form-start-event-formproperties">
    <div>
-   表单ID：<input name="formproperty_id" type="text" value="some_id_1">表单名称：<input name="formproperty_name" type="text" value="some_prop_1">
+   字段ID：<input name="formproperty_id" type="text" >字段名称：<input name="formproperty_name" type="text">
    </div>
  </form>
 <form class="form-start-event-formproperties">
    <div>
-   表单ID：<input name="formproperty_id" type="text" value="some_id_2">表单名称：<input name="formproperty_name" type="text" value="some_prop_2">
+   字段ID：<input name="formproperty_id" type="text" >字段名称：<input name="formproperty_name" type="text" >
    </div>
 </form>
 			    </textarea>
@@ -620,7 +638,7 @@ function toActivity() {
     obj[_this.attr('name')] = _this.val();
   });
   
-  //绑定属性
+  //字段绑定
   var props = [];
   $('.form-start-event-formproperties').each(function() {
     var prop = {};
@@ -635,6 +653,7 @@ function toActivity() {
       totalCount : props.length,
       items : props
   };
+  
   return obj;
 }
 			    </textarea>
@@ -659,7 +678,10 @@ function fromActivity(node) {
   }
 }
 			    </textarea>
+			    
 			    </div>
+			    <p style="color:#c00;font-weight:bold;">如何设置和获取UserTask的属性</p>
+			    <p>UserTask是最常用的节点，属性也比较复杂，好在我们不必结束这些属性的含义（看Activity文档和JsonConverter的例子），只是介绍如何将这些与Form绑定。</p>
 		    </div>
 			
 			</div>
