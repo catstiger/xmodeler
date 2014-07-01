@@ -80,6 +80,11 @@
         <li>
 		<a class='bpmn-btn' id="addConnection">顺序流</a>
       </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a href="#" id="toJson" style="color:#fa6662;">导出JSON</a>
+        </li>
+      </ul>
     </nav>
   </div>
 </header>
@@ -148,6 +153,13 @@ $(function() {
 				}
 			}
 		}
+	});
+	/**
+	导出JSON
+	*/
+	$('#toJson').click(function() {
+	  var json = activityEngine.rawObject();
+	  alert(JSON.stringify(json));
 	});
 	//为菜单绑定事件
 	$('.bpmn-btn').each(function() {

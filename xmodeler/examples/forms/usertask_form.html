@@ -21,40 +21,76 @@ input {
 </head>
 <body style="background-color: #eee;">
 <h3>属性</h3>
-<form id="form-start-event">
+<form id="form-user-task">
    <input name="id" type="hidden" value="">
    <input name="initiator" type="hidden" value="">
-   <div>
-   名称：<input name="name" type="text" >
-   </div>
-   <div>
-   表单：<input name="formkeydefinition" type="表单Key">
-   </div>
+   <table style="width:100%">
+       <tr>
+           <td style="width:50%;">
+	           <div>
+			   任务名称：<input name="name" type="text" >
+			   </div>
+			   <div>
+			   绑定表单：<input name="formkeydefinition" type="text">
+			   </div>
+			   <div>
+			   文　　档：<input name="documentation" type="text">
+			   </div>
+           </td>
+           <td style="width:50%;">
+	           <div>
+			   分配给　：<input name="assignee" type="text">
+			   </div>
+			   <div>
+			   候选用户：<input name="candidateUsers" type="text">
+			   </div>
+			   <div>
+			   候选角色：<input name="candidateGroups" type="text">
+			   </div>
+           </td>
+       </tr>
+   </table>
+   
+   
 </form>
 
-<h3>表单：</h3>
-<form class="form-start-event-formproperties">
-   <div>
-   表单ID：<input name="formproperty_id" type="text" >表单名称：<input name="formproperty_name" type="text">
-   </div>
+<h3>表单字段：</h3>
+<form class="form-user-task-formproperties">
+	<table style="width:100%">
+       <tr>
+           <td style="width:50%;">
+           字段　ID：<input name="formproperty_id" type="text" >
+           </td>
+           <td style="width:50%;">
+            字段名称：<input name="formproperty_name" type="text">
+           </td>
+       </tr>
+    </table>
  </form>
-<form class="form-start-event-formproperties">
-   <div>
-   表单ID：<input name="formproperty_id" type="text" >表单名称：<input name="formproperty_name" type="text" >
-   </div>
+<form class="form-user-task-formproperties">
+   <table style="width:100%">
+       <tr>
+           <td style="width:50%;">
+           字段　ID：<input name="formproperty_id" type="text" >
+           </td>
+           <td style="width:50%;">
+            字段名称：<input name="formproperty_name" type="text">
+           </td>
+       </tr>
+    </table>
 </form>
 <script type="text/javascript">
 function toActivity() {
   var obj = {};
   //将Form组成一个Object
-  $('#form-start-event input').each(function() {
+  $('#form-user-task input').each(function() {
     var _this = $(this);
     obj[_this.attr('name')] = _this.val();
   });
   
   //字段绑定
   var props = [];
-  $('.form-start-event-formproperties').each(function() {
+  $('.form-user-task-formproperties').each(function() {
     var prop = {};
     $(this).find('input').each(function() {
       var _this = $(this);
@@ -73,7 +109,7 @@ function toActivity() {
 function fromActivity(node) {
   for(var prop in node.raw) {
     if(prop != 'formproperties') {
-      $('#form-start-event input[name=' + prop + ']').val(node.raw[prop]);
+      $('#form-user-task input[name=' + prop + ']').val(node.raw[prop]);
     } else {
       for(var i = 0; i < node.raw.formproperties.items.length; i++) {
         $('input[name=formproperty_id]').get(i).value = node.raw.formproperties.items[i]['formproperty_id'];
