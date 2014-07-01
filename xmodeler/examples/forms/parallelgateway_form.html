@@ -20,31 +20,12 @@ input {
 </style>
 </head>
 <body style="background-color: #eee;">
-<form id="form-timerevent">
+<form id="form-exclusivegateway">
    <input name="id" type="hidden">
    <table style="width:100%">
        <tr>
-           <td style="width:50%;">
+           <td >
            名　　称：<input name="name" type="text" >
-           </td>
-           <td  style="width:50%;">
-           文　　档：<input name="documentation" type="text" >
-           </td>
-       </tr>
-       <tr>
-           <td  style="width:50%;">
-           取消动作：<select name="cancelactivity" style="width:200px;"><option value="true">是</option><option value="false">否</option></select>
-           </td>
-           <td  style="width:50%;">
-           等待时间：<input name="timerdurationdefinition" type="text" >
-           </td>
-       </tr>
-       <tr>
-           <td  style="width:50%;">
-           触发时间：<input name="timerdatedefinition" type="text" >
-           </td>
-           <td  style="width:50%;">
-           循环间隔：<input name="timercycledefinition" type="text" >
            </td>
        </tr>
        
@@ -56,7 +37,7 @@ input {
 function toActivity() {
   var obj = {};
   //将Form组成一个Object
-  $('#form-timerevent input,select').each(function() {
+  $('#form-exclusivegateway input').each(function() {
     var _this = $(this);
     obj[_this.attr('name')] = _this.val();
   });
@@ -66,10 +47,13 @@ function toActivity() {
 
 function fromActivity(node) {console.log(node)
   for(var prop in node.raw) {
-    $('#form-timerevent *[name=' + prop + ']').val(node.raw[prop]);
+    $('#form-exclusivegateway input[name=' + prop + ']').val(node.raw[prop]);
   }
 }
 
+$(function() {
+  toActivity();
+});
 </script>
 </body>
 </html>
