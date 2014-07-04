@@ -208,7 +208,6 @@ Engine.prototype._removeShadow = function() {
 
 Engine.prototype.saveAsImage = function () {
   var image = this.canvas.toDataURL("image/png").replace("image/png", "image/octet-stream;Content-Disposition:attachment;filename=\"canvas.png\"");   
-  console.log(image);
   window.location.href = image;
 };
 
