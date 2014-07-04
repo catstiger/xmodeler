@@ -79,6 +79,10 @@
 		</li>
         <li>
 		<a class='bpmn-btn' id="addConnection">顺序流</a>
+		</li>
+		<li>
+		<a class='bpmn-image'>导出图片</a>
+		</li>
       </ul>
     </nav>
   </div>
@@ -114,6 +118,10 @@ $(function() {
 	    bpm.setAction(this.id);
 	    e.preventDefault();
 	  });
+	});
+	
+	$('.bpmn-image').click(function() {
+	  bpm.saveAsImage();
 	});
 	
 	 $('#actions').change(function() {
