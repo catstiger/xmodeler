@@ -25,21 +25,17 @@ var ActivityEngine = function(props) {
 			action : 'UserTask',
 			text : '用户任务'
 		}, {
-			className : 'script-task',
-			action : 'ScriptTask',
-			text : '脚本任务'
-		}, {
 			className : 'parallel-gateway',
 			action : 'ParallelGateway',
 			text : '平行网关'
-		},{
+		}, {
+      className : 'exclusive-gateway',
+      action : 'ExclusiveGateway',
+      text : '互斥网关'
+    }, {
 			className : 'connection',
 			action : '',
 			text : '连接线'
-		}, {
-			className : 'sp',
-			action : '',
-			text : ''
 		}, {
 			className : 'subprocess',
 			action : 'SubProcess',
@@ -52,7 +48,15 @@ var ActivityEngine = function(props) {
 			className : 'delete',
 			action : '',
 			text : '删除'
-		}]);
+		}, {
+      className : 'sp',
+      action : '',
+      text : ''
+    }, {
+      className : 'savepng',
+      action : 'saveAsImage',
+      text : '导出图片'
+    }]);
 	} 
 	ActivityEngine.superClass.constructor.call(this, props);
 };

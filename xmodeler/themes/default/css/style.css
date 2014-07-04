@@ -86,6 +86,14 @@ ul.ctx-menu li.timer{
 	list-style-image: url(../images/timer.png);
 }
 
+ul.ctx-menu li.savepng{
+	list-style-image: url(../images/savepng.png);
+}
+
+ul.ctx-menu li.exclusive-gateway{
+	list-style-image: url(../images/exclusive-gateway16.png);
+}
+
 
 .start16 {
 	background: url(../images/start16.png) no-repeat;

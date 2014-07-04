@@ -63,6 +63,8 @@ var ContextMenu = function(engine, menus) {
             }
           }
         }
+      } else if (target.attr('action') == 'saveAsImage') {
+        me.engine.saveAsImage();
       } else if (target.attr('action')) {
         me.addNode('add' + target.attr('action'));
       }
@@ -82,8 +84,10 @@ ContextMenu.prototype = {
 
     if (!nodes || nodes.length == 0) {
       var pos = {
-        x : ($(this.menuDom).offset().left - $(this.engine.container).offset().left),
-        y : ($(this.menuDom).offset().top - $(this.engine.container).offset().top)
+        //x : ($(this.menuDom).offset().left - $(this.engine.container).offset().left),
+        //y : ($(this.menuDom).offset().top - $(this.engine.container).offset().top)
+        x : (this.eventPos ? this.eventPos.x : ($(this.menuDom).offset().left - $(this.engine.container).offset().left)),
+        y : (this.eventPos ? this.eventPos.y : ($(this.menuDom).offset().top - $(this.engine.container).offset().top))
       };
 
       this.engine[func](pos);
@@ -132,13 +136,36 @@ ContextMenu.prototype = {
     if (!this.menuDom) {
       return;
     }
-
     this.eventPos = Utils.epos(event);
-    $(this.menuDom).css({
-      left : (this.eventPos.x + $(this.engine.container).offset().left) + ((Utils.isIE7 || Utils.isIE6) ? -30 : 0),
-      top : (this.eventPos.y + $(this.engine.container).offset().top)
-    }).slideDown();
-
+    
+    var left = (this.eventPos.x + $(this.engine.container).offset().left) + ((Utils.isIE7 || Utils.isIE6) ? -30 : 0);
+    var top = (this.eventPos.y + $(this.engine.container).offset().top);
+    
+    var right = this.eventPos.x + $(this.menuDom).width();
+    var bottom = this.eventPos.y + $(this.menuDom).height();
+  
+    if(right <= $(this.engine.container).width() && bottom <= $(this.engine.container).height()) {
+      $(this.menuDom).css({
+        left : left,
+        top : top
+      }).slideDown();
+    } else  if (right <= $(this.engine.container).width() && bottom > $(this.engine.container).height()) {
+      $(this.menuDom).css({
+        left : left,
+        top : top - (bottom - $(this.engine.container).height())
+      }).show();
+    } else if(right > $(this.engine.container).width() && bottom <= $(this.engine.container).height()) {
+      $(this.menuDom).css({
+        left : left - (right - $(this.engine.container).width()),
+        top : top
+      }).show();
+    } else if(right > $(this.engine.container).width() && bottom > $(this.engine.container).height()) {
+      $(this.menuDom).css({
+        left : left - (right - $(this.engine.container).width()),
+        top : top - (bottom - $(this.engine.container).height())
+      }).slideDown();
+    }
+    
     this.isShow = true;
   },
 
