@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh_cn">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+
+<!-- 最新 Bootstrap 核心 CSS 文件 -->
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/css/bootstrap.min.css">
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
+
+<!--[if lt IE 9]><script src="../docs-assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+  <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script>
+  <script src="http://cdn.bootcss.com/respond.js/1.3.0/respond.min.js"></script>
+<![endif]-->
+<link rel="shortcut icon" href="images/logo16.png" type="image/x-icon" />
+
+<link rel="stylesheet" href="css/guide.css">
+<link rel="stylesheet" href="js/code/codemirror.css">
+<title>XModeler Documentaion</title>
+
+<style>
+body{font-family:"ff-tisa-web-pro-1","ff-tisa-web-pro-2","Lucida Grande","Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB","Hiragino Sans GB W3","WenQuanYi Micro Hei",sans-serif;}
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, .lead {font-family:"ff-tisa-web-pro-1","ff-tisa-web-pro-2","Lucida Grande","Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB","Hiragino Sans GB W3","Microsoft YaHei UI","Microsoft YaHei","WenQuanYi Micro Hei",sans-serif;}
+pre code { background: transparent; }
+@media (min-width: 768px) {
+    .bs-docs-home .bs-social, 
+    .bs-docs-home .bs-masthead-links {
+      margin-left: 0;
+    }
+}
+
+h2 {
+  font-size:18px;
+}
+
+.bs-docs-section p {
+	line-height: 2;
+}
+
+.bs-docs-section p.lead {
+	line-height: 1.4;
+}
+
+.CodeMirror {
+    height : auto !important;
+}
+
+.cm-s-default .cm-comment {color: #009900;}
+.cm-s-default .cm-tag {color: #d820a1;}
+
+ul li b {
+  color:#428BCA;
+}
+</style>
+
+</head>
+<body class="bs-docs-home" cz-shortcut-listen="true">
+ <a class="sr-only" href="#content">Skip to main content</a>
+
+  <!-- Docs master nav -->
+  <header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">
+  <div class="container">
+    <div class="navbar-header">
+      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="index.html" class="navbar-brand"><img src="images/logo32.png" style="width:24px;"/>&nbsp;XModeler</a>
+    </div>
+    <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+      <ul class="nav navbar-nav">
+        <li>
+          <a href="getting-started.html">起步</a>
+        </li>
+        <li>
+          <a href="activiti.html">Activiti BPMN扩展</a>
+        </li>
+        <li class="active">
+          <a href="dev-guide.html">开发手册</a>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a href="about">关于</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- Docs page layout -->
+	<div class="bs-header" id="content">
+		<div class="container">
+			<h1>开发手册</h1>
+			<p>XModeler是一个基于HTML5 Canvas绘图框架，它本身并未针对任何需求，但是，开发者可以通过简单的扩展来实现特定的需求。</p>
+
+		</div>
+	</div>
+	<div class="container bs-docs-container">
+		<div class="row">
+			<div class="col-md-3">
+				<div class="bs-sidebar hidden-print affix-top" role="complementary">
+					<ul class="nav bs-sidenav">
+                        
+						<li><a href="#engine">Engine.js</a>
+						<li><a href="#element">Element.js</a>
+						<li><a href="#boxobject">BoxObject.js</a>
+						<li><a href="#fixsizeobject">FixSizeObject.js</a></li>
+						<li><a href="#dockableobject">DockableObject.js</a></li>
+						<li><a href="#graphicsex">GraphicsEx</a></li>
+						<li><a href="#abstractconnection">AbstractConnection.js</a></li>
+						<li><a href="#abstractactivity">AbstractActivity.js</a></li>
+						<li><a href="#abstractcontainer">AbstractContainer.js</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-md-9" role="main">
+			<div class="bs-docs-section">
+			
+			
+			<div class="page-header">
+			      <h1 id="engine">Engine.js</h1>
+			</div>
+			Engine.js是核心类，负责创建HTML5Canvas、“舞台（Stage）”对象、绑定事件等，可以扩展Engine.js以提供特定的功能。
+			<div class="highlight">
+			     <textarea mode="javascript">
+var ActivityEngine = function(props) {//构造函数
+	if (!props.menu) { //定义菜单
+		props.menu = new ContextMenu(this, [{
+			className : 'start-event',
+			action : 'UserTask',
+			text : '用户任务'
+		}]);
+	} 
+	//调用父类的构造函数
+	ActivityEngine.superClass.constructor.call(this, props);
+};
+
+//继承
+Q.inherit(ActivityEngine, Engine);
+
+ActivityEngine.prototype.addUserTask = function(options, container) {
+		return this._addAcitivty("UserTask", options, container);
+};
+	
+
+ActivityEngine.prototype.rawObject = function() {
+ //可以在这里定义特殊的Json格式
+};
+
+			     </textarea>
+			    </div>
+			 <p>Engine.js提供了丰富的API，以供调用：</p>
+			 <h3>setWidth</h3>
+			 <p>
+			     <ul>
+			         <li>设置绘图区的宽度。</li>
+			         <li>@param width 数字，设置绘图区的宽度。</li>
+			     </ul>
+			 </p>
+			 <h3>setHeight</h3>
+			 <p>
+			     <ul>
+			         <li>设置绘图区的高度度。</li>
+			         <li>@param height 数字，设置绘图区的高度。</li>
+			     </ul>
+			 </p>
+			 
+			 <h3>setAction</h3>
+			 <p>
+			     <ul>
+			         <li>设置当前动作，使得XModeler绘图引擎进入绘制某种元素的状态。</li>
+			         <li>@param actionName 字符串，如果为"addConnection"，则开始绘制一段由鼠标牵引的虚线，否则，
+			         该字符串必须为某个函数名。例如在前面的扩展中，我们定义了addUserTask函数，那么这里就可以输入"addUserTask"。</li>
+			     </ul>
+			 </p>
+			 
+			 <h3>setRaw</h3>
+			 <p>
+			     <ul>
+			         <li>设置绘图引擎“携带”的数据，根据不同的实现，这些数据可以任意设定。</li>
+			         <li>@param raw Object。</li>
+			     </ul>
+			 </p>
+			 
+			 <h3>getRaw</h3>
+			 <p>
+			     <ul>
+			         <li>返回绘图引擎“携带”的数据。</li>
+			         <li>@return Object。</li>
+			     </ul>
+			 </p>
+			 
+			 <h3>saveAsImage</h3>
+			 <p>
+			     <ul>
+			         <li>将绘制的图像保存为png图片。</li>
+			         <li><b>已知问题：</b>图片名总是不对...</li>
+			     </ul>
+			 </p>
+			 
+			 <h3>getSelected</h3>
+			 <p>
+			     <ul>
+			         <li>返回选择的元素，包括连接线。</li>
+			         <li>@return Array。</li>
+			     </ul>
+			 </p>
+			 
+			 <h3>getSelectedNodes</h3>
+			 <p>
+			     <ul>
+			         <li>返回选择的元素，<b>不</b>包括连接线。</li>
+			         <li>@return Array。</li>
+			     </ul>
+			 </p>
+			 
+			 <h3>getNodes</h3>
+			 <p>
+			     <ul>
+			         <li>返回所有元素，包括容器（container）元素中的子元素，<b>不</b>包括连接线。</li>
+			         <li>@return Array。</li>
+			     </ul>
+			 </p>
+			 
+			 <h3>setActive</h3>
+			 <p>
+			     <ul>
+			         <li>设置指定的节点为激活状态，处于激活状态的节点，将以不同的颜色表示</li>
+			         <li>@param nodeIds 节点ID数组</li>
+                     <li>@param border Object, 节点边框定义：width,radius,color，如果不设置，则采用缺省值红色</li>
+                     <li>
+                     <div class="highlight"><textarea mode="javascript">
+var engine = new SomeEngine();
+engine.setActive(['nodeId'], {
+    width : 2, //边框宽度
+    radius : 10, //圆角半径
+    color : #ff0000//边框颜色
+});
+                     </textarea></div>
+                     </li>
+			     </ul>
+			 </p>
+			 
+			 
+			 <h3>deactiveAll</h3>
+			 <p>
+			     <ul>
+			         <li>取消所有元素的激活状态，使得这些元素恢复到原始状态。</li>
+			     </ul>
+			 </p>
+			 
+			 <h3>setReadonly</h3>
+			 <p>
+			     <ul>
+			         <li>@param boolean， 如果为true，那么XModeler将不能绘制任何元素，但是可以选择元素，并响应click事件。</li>
+			     </ul>
+			 </p>
+			 
+			 <h3>setMute</h3>
+			 <p>
+			     <ul>
+			         <li>@param boolean， 与setReadOnly一起使用，如果为true，那么XModeler将进入静默状态，不能绘制图形，也不能选择。</li>
+			     </ul>
+			 </p>
+			 
+			 <h3>clear</h3>
+			 <p>
+			     <ul>
+			         <li>删除所有元素。</li>
+			     </ul>
+			 </p>
+			 
+			 <h3>byId</h3>
+			 <p>
+			     <ul>
+			         <li>根据ID选择元素。</li>
+			         <li>@param id,元素ID</li>
+			         <li>@param parent，上级元素，如果为空，则从根元素（Stage对象）开始搜索，否则从parent的子元素中搜索。</li>
+			     </ul>
+			 </p>
+			 
+			 <h3>getRect</h3>
+			 <p>
+			     <ul>
+			         <li>返回整个绘图区的范围。</li>
+			         <li>@param Object, 
+			         <p>
+			         <div class="highlight">
+			         <textarea mode="javascript">
+{
+    x : 1, //左上角x
+    y : 1, //左上角y
+    width : 100, //宽度
+    height : 100//高度
+}			         
+			         </textarea></div></p>
+			         </li>
+			         
+			     </ul>
+			 </p>
+			 
+			<div class="page-header">
+			      <h1 id="element">Element.js</h1>
+			</div>
+			
+			<div class="page-header">
+			      <h1 id="boxobject">BoxObject.js</h1>
+			</div>
+			
+			<div class="page-header">
+			      <h1 id="fixsizeboject">FixSizeObject.js</h1>
+			</div>
+			
+			
+			</div>
+			</div>
+	    </div>
+	</div>
+<!-- ////////////////////////Footer//////////////////////// -->
+<footer class="bs-footer" role="contentinfo">
+      <div class="container">
+        <p>Code licensed under <a href="http://www.gnu.org/licenses/lgpl.html" target="_blank">LGPL 3</a>.</p>
+        <p>XModeler版权归<a href="http://www.honqun.com/">石家庄鸿坤网络科技有限公司</a>及<a href="catstiger@gmail.com">Catstiger</a>所有。</p><p>
+        </p>
+        <ul class="footer-links">
+          <li>当前版本： v1.0.2</li>
+        </ul>
+      </div>
+</footer>
+
+
+<script src="http://cdn.bootcss.com/holder/2.0/holder.min.js"></script>
+<script src="http://cdn.bootcss.com/highlight.js/7.3/highlight.min.js"></script>
+<script >hljs.initHighlightingOnLoad();</script>
+<script type="text/javascript" src="js/code/codemirror.js"></script>
+<script src="js/code/mode/xml/xml.js"></script>
+<script src="js/code/mode/htmlmixed/htmlmixed.js"></script>
+<script src="js/code/mode/javascript/javascript.js"></script>
+
+<script type="text/javascript" src="js/application.js"></script>
+<script type="text/javascript">
+$(function() {
+  $('textarea').each(function() {
+    var mode = $(this).attr("mode");
+    if(!mode) {
+      mode = "xml"
+    }
+    
+    var codeMirror = CodeMirror.fromTextArea(this, {
+      mode:  mode,
+      readOnly : true,
+      lineNumbers : true,
+      height:100
+    });
+  });
+});
+</script>
+</body>
+</html>
