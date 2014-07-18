@@ -322,21 +322,247 @@ engine.setActive(['nodeId'], {
 			Element中的函数分为3种类型：
 			</p>
 			<ul>
-			    <li><b>事件响应函数</b>。XModoler绘图区域实际上是一个HTML5 Canvas，绘制在上面的所谓“元素”实际上都是画出来的图形，
-			    这些元素既不是HTML DOM对象也不是任何可以响应事件的对象。如果要让</li>
-			    <li><b>计算函数</b>。</li>
-			    <li><b>绘图函数</b>。</li>
-			    <li><b>辅助函数</b>。</li>
+			    <li><b>事件响应函数。</b>XModoler绘图区域实际上是一个HTML5 Canvas，它是一个DOM对象可以响应事件；但是，绘制在Canvas上面的所谓“元素”实际上都是画出来的图形，
+			    这些元素既不是HTML DOM对象也不是任何可以响应事件的对象。如果要让这些元素响应事件，就必须将Canvas的事件传递给这些元素。例如鼠标点击事件（click）的处理过程是：
+			    Canvas响应事件→遍历所有元素（Element）→调用元素的onClick函数→元素对象根据自身位置决定是否处理click事件。Element的事件函数包括：<br/>
+			    <ol>
+			        <li>onMouseDown鼠标按下事件。</li>
+			        <li>onMouseUp鼠标抬起事件。</li>
+			        <li>onMouseEnter鼠标进入事件。</li>
+			        <li>onMouseLeave鼠标离开事件。</li>
+			        <li>onMouseMove鼠标移动事件。</li>
+			        <li>onDblClick鼠标双击事件。</li>
+			        <li>onKeyDown键盘按键事件。</li>
+			    </ol>
+			    </li>
+			    <li><b>计算函数。</b><br/>
+			    <ol>
+			        <li>inBox：计算当前元素是否在一个矩形区域之内，参数分别是给定矩形的左上角横坐标、左上角纵坐标、矩形宽度、矩形高度。
+			        实现类需要根据自身形状编写算法。</li>
+			        <li>hitTest：计算参考点是否在当前元素范围之内，参数分别是给定参考点的横坐标和纵坐标。</li>
+			    </ol>
+			    </li>
+			    <li><b>绘图函数。</b>
+			    <ol>
+			        <li>_drawBasic：实现类根据自身需求，绘制基础图形，例如，在Activiti BPMN的实现中，UserTask类实现_drawBasic绘制一个圆角矩形。</li> 
+			        <li>_drawSelector：实现类根据自身需求，绘制元素选中时的图形，例如，在Activiti BPMN的实现中，UserTask类实现_drawSelector绘制一个浅黄色矩形。</li> 
+			    </ol>
+			    </li>
+			    <li><b>辅助函数。</b>
+			    <ol>
+			        <li>remove：删除当前元素，可以调用QuarkJS提供的removeChild实现，例如：
+			            <div class="highlight">
+			                <textarea mode="javascript">
+BoxObject.prototype.remove = function() {
+    this.parent.removeChild(this); //每一个Element都有一个parent对象，顶级的parent就是QuarkJs Stage对象。
+};
+			                </textarea>
+			            </div>
+			        </li>
+			        
+			        <li>setRaw：设置元素所“携带”的原生数据，也就是说元素所代表的业务对象的数据，例如，对于UserTask类，raw就是Activiti所要求的各种属性。</li>
+			        <li>getRaw：返回元素所携带的原生数据。</li>
+			        <li>rawObject：构造元素所“携带”的原生数据，使之符合某些特殊的业务要求。</li>
+			        <li>getBounds：取得元素的边界，例如：<br/>
+			            <div class="highlight">
+			                <textarea mode="javascript">
+BoxObject.prototype.getBounds = function() {
+	return {
+		lowerRight : {
+			x : this.x + this.width,
+			y : this.y + this.height
+		},
+		upperLeft : {
+			x : this.x,
+			y : this.y
+		}
+	};
+};
+			                </textarea>
+			            </div>
+			        </li>
+			        <li>getOutgoing：如果有连接线“离开”当前元素，getOutgoing函数返回这些元素的id数组。例如在BoxObject中缺省的实现。<br/>
+			         <div class="highlight">
+			                <textarea mode="javascript">
+BoxObject.prototype.getOutgoing = function() {
+	var og = [];
+	var items = this.parent.children.slice(0);
+	for(var i = 0; i < items.length; i++) {
+		 if (items[i].baseType === 'connection') {
+			 if(items[i].startNode.id == this.id) {
+				 og.push({
+					 resourceId : items[i].id,
+					 id : items[i].id,
+					 name : items[i].name
+				 });
+			 }
+		 }
+	}
+	return og;
+};
+			                </textarea>
+			            </div>
+			        
+			        </li>
+			        <li>_isConnection：是否是连接线类型的对象。</li>
+			        <li>getSelected：如果当前元素是一个容器（例如Activiti中的SubProcess）,那么getSelected函数返回容器中选中的对象的数组。</li>
+			        
+			    </ol>
+			    </li>
 			</ul>
 			
 			<div class="page-header">
 			      <h1 id="boxobject">BoxObject.js</h1>
 			</div>
+			<p>
+			BoxObject继承自Element，BoxObject代表“矩形元素”，它的子类通常都是一些矩形的元素。BoxObject扩展了Element：
+			</p>
+			<ul>
+			    <li><b>_mouseCloseBundary，</b>私有函数，当元素在选中状态下，鼠标移动到边框附近的时候，返回true，并根据鼠标位置，改变鼠标指针。</li>
+			    <li><b>boxCrossed，</b>判断当前矩形元素是否与给定的矩形区域交叉（inBox是判断是否在内），参数是一个对象，属性包括：x、y、width、height。</li>
+			    <li><b>getIngoing，</b>与getOutgoing相反，getIngoing返回的的是“进入”矩形的连接线。</li>
+			</ul>
+			
 			
 			<div class="page-header">
 			      <h1 id="fixsizeboject">FixSizeObject.js</h1>
 			</div>
+			<p>
+			FixSizeObject继承自BoxObject，FixSizeObject代表“不能缩放的对象”，它的子类通常都是一些图标元素，例如：StartEvent.js。FixSize的子类只需要提供
+			图标文件的URL即可。例如：
+			</p>
+			<div class="highlight">
+			     <textarea mode="javascript">
+var StartEvent = function(props) {
+	StartEvent.superClass.constructor.call(this, props);
+	this.rawType = 'StartNoneEvent'; //节点类型
+	 this.icon = "/start.png"; //图标文件
+	 this.name = "start";节点名称
+};
+
+
+Q.inherit(StartEvent, FixSizeObject);
+			     </textarea>
+			</div>
+			<div class="page-header">
+			      <h1 id="dockableobject">DockableObject.js</h1>
+			</div>
+			<p>
+			有一些图形是需要停靠在另外的图形上的，例如，Activity TimerEvent、UML中的泛型表达、建筑平面图中房间与门就是这样的关系。
+			目前DockableObject继承自FixSizeObject，因此只能提供图标元素的停靠功能。
+			</p>
+			<ul>
+			    <li><b>onMouseUp，</b>拖动的时候，计算当前元素的位置，判断是否与某一个可停靠元素交叉，如果交叉，则调用_dock函数，实现停靠。否则，就取消停靠。</li>
+			    <li><b>onMouseMove，</b>移动当前元素，如果当前元素与某一个可停靠的元素交叉，则改变这个可停靠元素的边框颜色。</li>
+			    <li><b>_dock，</b>如果当前元素没有停靠，则将当前元素停靠在另外一个元素上，并计算合适的停靠位置。如果当前元素已经停靠在一个元素上，则取消停靠。</li>
+			</ul>
 			
+			<div class="page-header">
+			      <h1 id="graphicsex">GraphicsEx.js</h1>
+			</div>
+			<p>
+			继承自QuarkJS Graphics对象，增加了绘制点划线和虚线矩形的函数。
+			</p>
+			
+			
+			<div class="page-header">
+			      <h1 id="abstractconnection">AbstractConnection.js</h1>
+			</div>
+			<p>
+			AbstractConnection继承自Element对象，提供了绘制直线和箭头的完整功能，子类只需要提供rawObject函数的实现即可。例如：
+			</p>
+			<div class="highlight">
+			     <textarea mode="javascript">
+var SequenceFlow = function(props) {
+	SequenceFlow.superClass.constructor.call(this, props);
+	this.id = props.id || Quark.UIDUtil.createUID('sequenceFlow');
+    this.rawType = "SequenceFlow";
+};
+
+Q.inherit(SequenceFlow, AbstractConnection);
+
+SequenceFlow.create = function(props) {
+    return new SequenceFlow(props);	
+};
+
+SequenceFlow.prototype.rawObject = function() {
+  //在这里构建符合业务要求的数据，与图形绘制无关。
+};
+			     </textarea>
+			</div>
+			
+			<div class="page-header">
+			      <h1 id="abstractactivity">AbstractActivity.js</h1>
+			</div>
+			<p>
+			AbstractActivity继承自BoxObject对象，提供了完整的绘制一个矩形的方法，包括：
+			</p>
+			<ul>
+			    <li>在指定位置(x,y)绘制一个指定大小(width,height)的圆角矩形。（目前圆角半径还不能设置。）</li>
+			    <li>在矩形左上角绘制一个图标，通过icon属性设置。</li>
+			    <li>在矩形中间显示文本，由name属性设置。</li>
+			    <li>可以选中，选中情况下绘制一个浅黄色边框，在四个角上和每条边的中间，显示一个小的矩形。</li>
+			    <li>选中状态下可以拖动。</li>
+			    <li>选中状态下可以缩放。</li>
+			</ul>
+			<p>
+			一般来说，子类只需要提供name、x、y、icon、rawType等属性即可。
+			</p>
+			<div class="highlight">
+			     <textarea mode="javascript">
+var UserTask = function(props) {
+	UserTask.superClass.constructor.call(this, props);
+    this.rawType = "UserTask";
+    this.baseType = 'task',
+    this.icon = '/user.png';//图标
+    this.name = 'User Task';//文字
+};
+
+Q.inherit(UserTask, AbstractActivity);
+
+UserTask.create = function(opts) {
+    var options = {
+        id : Quark.UIDUtil.createUID('userTask'),
+        autoSize : true
+    };
+    Q.merge(options, opts); // 赋值操作
+
+    return new UserTask(options);
+};
+
+/**
+ * 用户任务
+ */
+UserTask.prototype.rawObject = function() {
+  //根据不同的业务需求，构造合适的数据。
+};
+			     </textarea>
+			</div>
+			
+			<div class="page-header">
+			      <h1 id="abstractcontainer">AbstractContainer.js</h1>
+			</div>
+			<p>
+			继承自AbstractActivity对象，AbstractContainer的子类可以容纳其他的元素，AbstractContainer提供事件委派、最大化、最小化等功能。
+			一般来说，子类不必修改（覆盖）AbstractContainer函数，只需要提供需要提供name、x、y、icon、rawType等属性即可。
+			</p>
+			<div class="highlight">
+			     <textarea mode="javascript">
+var SubProcess = function(props) {
+  if(!props) {
+    props = {};
+  }
+  props.name = 'Sub Process'
+  SubProcess.superClass.constructor.call(this, props);
+  this.rawType = "SubProcess";
+};
+
+Q.inherit(SubProcess, AbstractContainer);
+SubProcess.prototype.rawObject = function() {
+  //根据不同的业务需求，构造合适的数据。
+};
+			     </textarea>
+			</div>
 			
 			</div>
 			</div>
