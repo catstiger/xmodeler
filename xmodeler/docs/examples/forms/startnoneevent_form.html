@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh_cn">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/css/bootstrap.min.css">
+<script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
+<style type="text/css">
+form div {
+    margin : 5px;
+}
+input {
+   width : 200px;
+   margin: 0px 5px;
+}
+</style>
+</head>
+<body style="background-color: #eee;">
+<h3>属性</h3>
+<form id="form-start-event">
+   <input name="id" type="hidden" value="">
+   <input name="initiator" type="hidden" value="">
+   <div>
+   节点名称：<input name="name" type="text" >
+   </div>
+   <div>
+   绑定表单：<input name="formkeydefinition" type="表单Key">
+   </div>
+</form>
+
+<h3>表单字段：</h3>
+<form class="form-start-event-formproperties">
+   <div>
+   字段ID：<input name="formproperty_id" type="text" >字段名称：<input name="formproperty_name" type="text">
+   </div>
+ </form>
+<form class="form-start-event-formproperties">
+   <div>
+   字段ID：<input name="formproperty_id" type="text" >字段名称：<input name="formproperty_name" type="text" >
+   </div>
+</form>
+<script type="text/javascript">
+function toActivity() {
+  var obj = {};
+  //将Form组成一个Object
+  $('#form-start-event input').each(function() {
+    var _this = $(this);
+    obj[_this.attr('name')] = _this.val();
+  });
+  
+  //字段绑定
+  var props = [];
+  $('.form-start-event-formproperties').each(function() {
+    var prop = {};
+    $(this).find('input').each(function() {
+      var _this = $(this);
+      prop[_this.attr('name')] = _this.val();
+    });
+    props.push(prop);
+  });
+  
+  obj.formproperties = {
+      totalCount : props.length,
+      items : props
+  };
+  
+  return obj;
+}
+
+function fromActivity(node) {
+  for(var prop in node.raw) {
+    if(prop != 'formproperties') {
+      $('#form-start-event input[name=' + prop + ']').val(node.raw[prop]);
+    } else {
+      for(var i = 0; i < node.raw.formproperties.items.length; i++) {
+        $('input[name=formproperty_id]').get(i).value = node.raw.formproperties.items[i]['formproperty_id'];
+        $('input[name=formproperty_name]').get(i).value = node.raw.formproperties.items[i]['formproperty_name'];
+      }
+    }
+  }
+}
+
+$(function() {
+  toActivity();
+});
+</script>
+</body>
+</html>
