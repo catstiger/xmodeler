@@ -342,7 +342,7 @@ AbstractConnection.prototype._drawSelector = function() {
 };
 
 AbstractConnection.prototype._drawText = function() {
-	if(!this.condition) {
+	if(!this.name) {
 		return;
 	}
 	if(Utils.isIE6) {
@@ -384,7 +384,7 @@ AbstractConnection.prototype._drawText = function() {
 	var angle =  Math.atan(k);
 	//计算文本宽度
 	var ctx = this.getStage().context.canvas.getContext("2d");
-  var metrics = ctx.measureText(this.condition);
+  var metrics = ctx.measureText(this.name);
   var textWidth = metrics.width; //文本宽度
   if(Utils.isIE8m) {
      textWidth = textWidth * 1.5;
@@ -412,7 +412,7 @@ AbstractConnection.prototype._drawText = function() {
 	._addAction([ "font", "12px serif" ])
 	._addAction(['translate', centerX, centerY])
 	._addAction(['rotate', angle])
-	._addAction(["fillText", this.condition, textX, textY ]);
+	._addAction(["fillText", this.name, textX, textY ]);
 };
 
 /**
