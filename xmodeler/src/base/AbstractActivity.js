@@ -342,7 +342,7 @@ AbstractActivity.prototype._drawText = function() {
 		e.stopPropagation();
 		e.stopImmediatePropagation();
 	};
-	if (Utils.isIE6/* || Utils.isIE7 || Utils.isIE8*/) { // IE8浏览器
+	if (Utils.isIE6 || Utils.isIE7 || Utils.isIE8) { // IE8浏览器
 		var domId = 'text-' + this.id;
 		var p = $(this.getStage().context.canvas).parent();
 		if (!this.textDom) {
