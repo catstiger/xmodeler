@@ -42,6 +42,7 @@ var AbstractConnection = function(props) {
 	this.dragingPoint = null; //正在拖动的拐点的index
 	this.selected = false; // 选择状态
 	this.baseType = "connection"; //节点类型
+	this.canBeConnected = false; //不能在连接线上绘制连接线
 
 };
 

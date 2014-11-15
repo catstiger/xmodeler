@@ -50,6 +50,10 @@ ul.ctx-menu li.parallel-gateway {
 	list-style-image: url(../images/parallel_gateway16.png);
 }
 
+ul.ctx-menu li.exclusive-gateway {
+    list-style-image: url(../images/exclusive-gateway16.png);
+}
+
 ul.ctx-menu li.delete{
 	list-style-image: url(../images/delete.png);
 }

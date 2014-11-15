@@ -45,7 +45,7 @@ var ContextMenu = function(engine, menus) {
         }
       } else if (target.hasClass('connection')) {
         var selected = me.engine.getSelected();
-        if (selected && selected.length > 0) {
+        if (selected && selected.length == 1 && selected[0].canBeConnected) {
           me.engine.addShadowFlow({
             removeOnComplete : true
           }, selected[0], selected[0].parent);

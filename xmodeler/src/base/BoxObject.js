@@ -1,5 +1,6 @@
 var BoxObject = function(props) {
     BoxObject.superClass.constructor.call(this, props);
+    this.canBeConnected = true;
 };
 
 Q.inherit(BoxObject, Element);

@@ -21,6 +21,7 @@ var Element = function(props) {
 
 	this.addChild(this.basicPainter);
 	this.addChild(this.selectorPainter);
+	this.canBeConnected = true; //是否可以连接，例如Connect对象就是不可以用连接线连接的
 	
     this.selected = false;
     /**

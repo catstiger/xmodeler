@@ -25,6 +25,7 @@ var ShadowFlow = function(props) {
 	this.overNode = null;
 	this.startNode = null;
 	this.connectionCreated = props.connectionCreated;
+	this.canBeConnected = false;
 };
 
 Q.inherit(ShadowFlow, Q.DisplayObjectContainer);
@@ -36,7 +37,7 @@ Q.inherit(ShadowFlow, Q.DisplayObjectContainer);
  * @param startNode 开始节点，如果这个存在，则直接进入“begin”状态
  */
 ShadowFlow.create = function(opts, startNode) {
-	var options = {
+ var options = {
 			id : Quark.UIDUtil.createUID('shadowFlow'),
 			x : 0,
 			y : 0,
@@ -69,6 +70,7 @@ ShadowFlow.prototype.onMouseMove = function(e) {
 	}
 	
 	var currentNode = this._getCurrentBox();
+   
 	if(currentNode) {
 		this.inBox = true;
 		if(Utils.isIE8m) {
@@ -102,6 +104,7 @@ ShadowFlow.prototype.onMouseDown = function(e) {
 	var pos = Utils.epos(e);
 	e.cancelBubble = true;
 	var currentNode = this._getCurrentBox();
+	
 	if(!this.begin) { //还没开始画虚线，当进入一个node中，开始画虚线
 		if(currentNode) {
 			this.begin = true;

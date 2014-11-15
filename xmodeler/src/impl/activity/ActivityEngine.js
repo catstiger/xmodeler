@@ -105,12 +105,16 @@ ActivityEngine.prototype.addTimerEvent = function(options, container) {
 };
 	
 ActivityEngine.prototype.addShadowFlow = function(opts, startNode, container) {
+  if(!startNode || !startNode.canBeConnected) {
+    return;
+  }
 	if(!opts) {
 		opts = {};
 	}
 	opts.connectionCreated = function(connection) {
 		connection.id = Quark.UIDUtil.createUID('sequenceFlow');
 		connection.rawType = "SequenceFlow";	
+		connection.rawObject = SequenceFlow.prototype.rawObject;
 	};
 	
 	ActivityEngine.superClass.addShadowFlow.call(this, opts, startNode, container);
