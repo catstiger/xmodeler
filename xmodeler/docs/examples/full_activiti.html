@@ -8,9 +8,13 @@
 <script type="text/javascript" src="xmodeler/lib/ie/faces/optimer-normal-normal.js"></script>
 <![endif]-->
 
-<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/css/bootstrap.min.css">
+<!-- Bootstrap 核心 CSS 文件 -->
+<link href="http://cdn.bootcss.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+<link href="http://cdn.bootcss.com/bootstrap/2.3.2/css/bootstrap-responsive.min.css" rel="stylesheet">
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
 <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
-<script src="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="http://cdn.bootcss.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
 
 <!-- Quark是一个HTML5游戏框架，在这里用于实现动画效果、绘图和事件 -->
 <script type="text/javascript" src="xmodeler/Utils.js"></script>
@@ -39,19 +43,16 @@
 </head>
 <body style="background-color:#eee;">
 
-<header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">
-  <div class="container">
-    <div class="navbar-header">
-      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a href="../docs/index.html" class="navbar-brand"><img src="../images/logo32.png" style="width:24px;"/>&nbsp;XModeler</a>
-    </div>
-    <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
-      <ul class="nav navbar-nav">
+<div class="navbar navbar-inverse navbar-fixed-top">
+     <div class="navbar-inner">
+      <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	  </button>
+      <a href="../docs/index.html" class="brand"><img src="../images/logo32.png" style="width:24px;"/>&nbsp;XModeler</a>
+      
+     <ul class="nav navbar-nav">
         <li>
         <a class='bpmn-btn' id="addStartEvent">开始事件</a>
         </li>
@@ -81,26 +82,26 @@
 		</li>
         <li>
 		<a class='bpmn-btn' id="addConnection">顺序流</a>
+		</li>
+		
       </ul>
-      <ul class="nav navbar-nav navbar-right">
+      
+      <ul class="nav pull-right">
         <li>
           <a href="#" id="toJson" style="color:#fa6662;">导出JSON</a>
         </li>
       </ul>
-    </nav>
+      
   </div>
-</header>
+</div>
 
-<div class="container bs-docs-container">
-	<div class="row">
-	    <br><br><br>
-		<div  id="bpm" class='canvas' style="margin-top:10px;height:300px;"></div>
+<div style="width:100%;">
+		<div  id="bpm" class='canvas' style="margin-top:5px;height:450px;"></div>
 		<input type="checkbox" id="readonly">只读模式
 		
 		<div style="padding:5px;">
 		<iframe src="forms/process_form.html" frameborder="0" style="width:100%;height:300px;" name="formsA" id="formsA"></iframe>
 		</div>
-	</div>
 </div>	
 
 
