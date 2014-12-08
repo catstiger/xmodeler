@@ -27,34 +27,23 @@ ServiceTask.prototype.rawObject = function() {
       documentation : this.raw.documentation || '',
       duedatedefinition : this.raw.dueDate,
       exclusivedefinition : this.raw.exclusiveDefinition || 'Yes',
-      formkeydefinition : this.raw.formKey || '',
-      formproperties : {
-        totalCount : (this.raw.formItems ? this.raw.formItems.length
-            : 0),
-        items : (this.raw.formItems ? this.raw.formItems : [])
-      },
+     
       isforcompensation : this.raw.isforcompensation || 'false',
       looptype : this.raw.looptype || 'None',
       name : this.name,
       prioritydefinition : this.raw.prioritydefinition,
       tasklisteners : this.raw.taskListeners || {},
-      usertaskassignment : {
-        items : (this.raw.userTaskAssignment ? this.raw.userTaskAssignment
-            : []),
-        totalCount : (this.raw.userTaskAssignment ? this.raw.userTaskAssignment.length
-            : 0)
-      },
-      executionlisteners : this.raw.executionlisteners || {},
+      sexecutionlisteners : this.raw.executionlisteners || {},
 
-      servicetaskclass : '',
-      servicetaskexpression : '',
-      servicetaskdelegateexpression : '',
-      servicetaskresultvariable : this.raw.serviceTaskResultVariable
-          || 'resultVariable',
+      servicetaskclass : this.raw.servicetaskclass,
+      servicetaskexpression : this.raw.servicetaskexpression,
+      servicetaskdelegateexpression : this.raw.servicetaskdelegateexpression,
+      servicetaskresultvariable : this.raw.servicetaskresultvariable
+          || '',
       servicetaskfields : {
-        items : (this.raw.serviceTaskFields ? this.raw.serviceTaskFields
+        items : (this.raw.servicetaskfields ? this.raw.servicetaskfields
             : []),
-        totalCount : (this.raw.serviceTaskFields ? this.raw.serviceTaskFields.length
+        totalCount : (this.raw.servicetaskfields ? this.raw.servicetaskfields.length
             : 0)
       }
     },
@@ -66,5 +55,6 @@ ServiceTask.prototype.rawObject = function() {
     bounds : this.getBounds(),
     dockers : []
   };
+  
   return obj;
 };

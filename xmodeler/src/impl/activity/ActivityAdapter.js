@@ -132,6 +132,14 @@ ActivityAdapter.prototype = {
 					node.raw.duedatedefinition = element.dueDate;
 					node.raw.prioritydefinition = element.priority;
 
+				} else if (elementName === 'ServiceTask') {				 
+				  if(element.implementationType === 'class') {
+				    node.raw.servicetaskclass = element.implementation;
+				  } else if (element.implementationType === 'expression') {
+				    node.raw.servicetaskexpression = element.implementation;
+				  } else if(element.implementationType === 'delegateExpression') {
+				    node.raw.servicetaskdelegateexpression = element.implementation;
+				  }
 				} else if (elementName === 'TimerEvent') {
 					timerEvents.push({
 						node : node,
