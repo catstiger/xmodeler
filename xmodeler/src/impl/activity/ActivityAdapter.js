@@ -140,6 +140,9 @@ ActivityAdapter.prototype = {
 				  } else if(element.implementationType === 'delegateExpression') {
 				    node.raw.servicetaskdelegateexpression = element.implementation;
 				  }
+				} else if(elementName === 'ScriptTask') {
+				    node.raw.scripttext = element.script;
+				    node.raw.scriptformat = element.scriptFormat;
 				} else if (elementName === 'TimerEvent') {
 					timerEvents.push({
 						node : node,

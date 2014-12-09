@@ -35,8 +35,8 @@ ScriptTask.prototype.rawObject = function() {
       prioritydefinition : this.raw.priorityDefinition,
       tasklisteners : this.raw.taskListeners || {},
 
-      scriptlanguage : this.raw.scriptLanguage || 'javascript',
-      script : this.raw.srcript || ''
+      scriptformat : this.raw.scriptformat || 'groovy',
+      scripttext : this.raw.scripttext || ''
     },
     stencil : {
       id : this.rawType
