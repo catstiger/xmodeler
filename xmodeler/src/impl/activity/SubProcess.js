@@ -31,7 +31,8 @@ SubProcess.prototype.rawObject = function() {
     outgoing : this.getOutgoing(),
     properties : {
       documentation : this.raw.documentation || '',
-      name : this.name
+      name : this.name,
+      executionlisteners : this.raw.executionlisteners || {}
     //defaultflow : this.raw.defaultFlow
     },
     resourceId : this.id,

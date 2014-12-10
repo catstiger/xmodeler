@@ -97,6 +97,7 @@ ActivityAdapter.prototype = {
 				node.raw.documentation = element.documentation;
 				node.raw.defaultFlow = element.defaultFlow;
 				node.raw.initiator = element.initiator;
+								
 				//用户任务
 				if (elementName === 'UserTask') {
 					node.raw.usertaskassignment = {
@@ -131,6 +132,28 @@ ActivityAdapter.prototype = {
 					node.raw.asynchronousdefinition = element.asynchronous;
 					node.raw.duedatedefinition = element.dueDate;
 					node.raw.prioritydefinition = element.priority;
+					
+					//任务监听器，Task Listener
+	                if(element.taskListeners && element.taskListeners.length > 0) {
+	                    node.raw.tasklisteners = {
+	                      totalCount : element.taskListeners.length,
+	                      items : []
+	                    };
+	                    for(var j = 0; j < element.taskListeners.length; j++) {
+	                        var listener = element.taskListeners[j];
+	                        var nodeListener = {
+	                            task_listener_event_type : listener.event
+	                        };
+	                        if(listener.implementationType === "delegateExpression") {
+	                            nodeListener.task_listener_delegate_expression = listener.implementation;
+	                        } else if (listener.implementationType === "expression") {
+	                            nodeListener.task_listener_expression = listener.implementation;
+	                        } else if (listener.implementationType === "class") {
+	                            nodeListener.task_listener_class = listener.implementation;
+	                        }
+	                        node.raw.tasklisteners.items.push(nodeListener);
+	                    }
+	                }
 
 				} else if (elementName === 'ServiceTask') {				 
 				  if(element.implementationType === 'class') {
@@ -150,7 +173,9 @@ ActivityAdapter.prototype = {
 					});
 				} else if (elementName === 'StartEvent') { //开始事件
 					node.raw.formkeydefinition = element.formKey;
-					node.raw.initiator = element.initiator;
+					node.raw.initiator = element.initiator;					
+				} else if (elementName === 'EndEvent') {
+					console.log(element);
 				}
 				//处理表单绑定
 				if (typeof (element.formProperties) != 'undefined'
@@ -172,7 +197,7 @@ ActivityAdapter.prototype = {
 						});
 					}
 				}
-
+				this.doExecutionListeners(element, node);
 				//子流程递归调用
 				if (element.flowElements && element.flowElements.length > 0) {
 					this.convert(element, bpmnModel, bpmnContainter, node);
@@ -228,8 +253,33 @@ ActivityAdapter.prototype = {
 					flow.name = element.name;
 					flow.isDefault = (flow.id === flow.startNode.raw.defaultFlow);
 				}
+				this.doExecutionListeners(element, flow);
 			}
 		}
+	},
+	
+	doExecutionListeners : function(element, node) {
+	  //执行监听，Execution Listener
+        if(element.executionListeners && element.executionListeners.length > 0) {
+            node.raw.executionlisteners = {
+              totalCount : element.executionListeners.length,
+              items : []
+            };
+            for(var j = 0; j < element.executionListeners.length; j++) {
+                var listener = element.executionListeners[j];
+                var nodeListener = {
+                    execution_listener_event_type : listener.event
+                };
+                if(listener.implementationType === "delegateExpression") {
+                    nodeListener.execution_listener_delegate_expression = listener.implementation;
+                } else if (listener.implementationType === "expression") {
+                    nodeListener.execution_listener_expression = listener.implementation;
+                } else if (listener.implementationType === "class") {
+                    nodeListener.execution_listener_class = listener.implementation;
+                }
+                node.raw.executionlisteners.items.push(nodeListener);
+            }
+        }
 	},
 	
 	/**

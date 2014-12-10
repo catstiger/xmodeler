@@ -33,7 +33,7 @@ ScriptTask.prototype.rawObject = function() {
       looptype : this.raw.looptype || 'None',
 
       prioritydefinition : this.raw.priorityDefinition,
-      tasklisteners : this.raw.taskListeners || {},
+      executionlisteners : this.raw.executionlisteners || {},
 
       scriptformat : this.raw.scriptformat || 'groovy',
       scripttext : this.raw.scripttext || ''

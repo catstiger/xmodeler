@@ -39,7 +39,8 @@ UserTask.prototype.rawObject = function() {
       looptype : this.raw.looptype || 'None',
       name : this.name,
       prioritydefinition : this.raw.prioritydefinition,
-      tasklisteners : this.raw.taskListeners || {},
+      tasklisteners : this.raw.tasklisteners || {},
+      executionlisteners : this.raw.executionlisteners || {},
       usertaskassignment : this.raw.usertaskassignment, //这个的格式需要参考activiti json converter测试资源
       defaultflow : this.raw.defaultFlow
     },
@@ -48,5 +49,6 @@ UserTask.prototype.rawObject = function() {
       id : this.rawType
     }
   };
+
   return obj;
 };

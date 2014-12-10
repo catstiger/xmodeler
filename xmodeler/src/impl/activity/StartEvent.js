@@ -26,7 +26,8 @@ StartEvent.prototype.rawObject = function() {
       documentation : this.raw.documentation || '',
       formproperties : this.raw.formproperties,
       initiator : this.raw.initiator,
-      formkeydefinition : this.raw.formkeydefinition || ''
+      formkeydefinition : this.raw.formkeydefinition || '',
+      executionlisteners : this.raw.executionlisteners || {}
     },
     stencil : {
       id : this.rawType

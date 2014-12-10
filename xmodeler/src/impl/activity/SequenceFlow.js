@@ -33,6 +33,7 @@ SequenceFlow.prototype.rawObject = function() {
       name : this.name,
       documentation : this.raw.documentation || '',
       conditionsequenceflow : this.raw.conditionsequenceflow || '',
+      executionlisteners : this.raw.executionlisteners || {},
       defaultflow : this.defaultFlow || "None",
       conditionalflow : this.conditionFlow || "None"
     },

@@ -33,7 +33,7 @@ ServiceTask.prototype.rawObject = function() {
       name : this.name,
       prioritydefinition : this.raw.prioritydefinition,
       tasklisteners : this.raw.taskListeners || {},
-      sexecutionlisteners : this.raw.executionlisteners || {},
+      executionlisteners : this.raw.executionlisteners || {},
 
       servicetaskclass : this.raw.servicetaskclass,
       servicetaskexpression : this.raw.servicetaskexpression,
@@ -55,6 +55,6 @@ ServiceTask.prototype.rawObject = function() {
     bounds : this.getBounds(),
     dockers : []
   };
-  
+
   return obj;
 };
