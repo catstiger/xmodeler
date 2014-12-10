@@ -174,9 +174,9 @@ ActivityAdapter.prototype = {
 				} else if (elementName === 'StartEvent') { //开始事件
 					node.raw.formkeydefinition = element.formKey;
 					node.raw.initiator = element.initiator;					
-				} else if (elementName === 'EndEvent') {
-					console.log(element);
-				}
+				} //else if (elementName === 'EndEvent') {
+					//console.log(element);
+				//}
 				//处理表单绑定
 				if (typeof (element.formProperties) != 'undefined'
 						&& element.formProperties.length > 0) {
