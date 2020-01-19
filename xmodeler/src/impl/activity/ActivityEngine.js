@@ -8,55 +8,61 @@
  */
 var ActivityEngine = function(props) {
 	if (!props.menu) {
-		props.menu = new ContextMenu(this, [{
-			className : 'start-event',
-			action : 'StartEvent',
-			text : '开始事件'
-		},{
-			className : 'end-event',
-			action : 'EndEvent',
-			text : '结束事件'
-		},{
-			className : 'timer',
-			action : 'TimerEvent',
-			text : '计时器事件'
-		},{
-			className : 'user-task',
-			action : 'UserTask',
-			text : '用户任务'
-		}, {
-			className : 'parallel-gateway',
-			action : 'ParallelGateway',
-			text : '平行网关'
-		}, {
-      className : 'exclusive-gateway',
-      action : 'ExclusiveGateway',
-      text : '互斥网关'
-    }, {
-			className : 'connection',
-			action : '',
-			text : '连接线'
-		}, {
-			className : 'subprocess',
-			action : 'SubProcess',
-			text : '子流程'
-		}, {
-			className : 'sp',
-			action : '',
-			text : ''
-		}, {
-			className : 'delete',
-			action : '',
-			text : '删除'
-		}, {
-      className : 'sp',
-      action : '',
-      text : ''
-    }, {
-      className : 'savepng',
-      action : 'saveAsImage',
-      text : '导出图片'
-    }]);
+		props.menu = new ContextMenu(this, [
+			{
+				className : 'start-event',
+				action : 'StartEvent',
+				text : '开始事件'
+			},{
+				className : 'end-event',
+				action : 'EndEvent',
+				text : '结束事件'
+			}/*,{
+				className : 'timer',
+				action : 'TimerEvent',
+				text : '计时器事件'
+			}*/,{
+				className : 'user-task',
+				action : 'UserTask',
+				text : '用户任务'
+			}/*, {
+				className : 'parallel-gateway',
+				action : 'ParallelGateway',
+				text : '平行网关'
+			}, {
+			    className : 'exclusive-gateway',
+			    action : 'ExclusiveGateway',
+			    text : '互斥网关'
+	       }*/, {
+				className : 'connection',
+				action : '',
+				text : '连接线'
+			}/*, {
+				className : 'subprocess',
+				action : 'SubProcess',
+				text : '子流程'
+			}, {
+				className : 'sp',
+				action : '',
+				text : ''
+			}*/, {
+			    className : 'sp',
+			    action : '',
+			    text : ''
+	        }, {
+				className : 'delete',
+				action : '',
+				text : '删除'
+			}/*, {
+			    className : 'sp',
+			    action : '',
+			    text : ''
+	        }, {
+		        className : 'iconfont icon-ruku',
+		        action : 'saveAsImage',
+		        text : '导出图片'
+	        }*/
+	    ]);
 	} 
 	ActivityEngine.superClass.constructor.call(this, props);
 };
@@ -165,6 +171,7 @@ ActivityEngine.prototype.rawObject = function() {
     },
     ssextensions : []
   };
+
   var children = [];
 
   var copy = this.stage.children.slice(0);

@@ -1,5 +1,5 @@
 .canvas {
-	background:url('../images/grid.jpg') repeat;
+	background:url('../images/square.gif') repeat;
     border-right:1px solid #ccc;
     border-bottom:1px solid #ccc;
 }
@@ -49,11 +49,9 @@ ul.ctx-menu li.sp {
 ul.ctx-menu li.parallel-gateway {
 	list-style-image: url(../images/parallel_gateway16.png);
 }
-
 ul.ctx-menu li.exclusive-gateway {
     list-style-image: url(../images/exclusive-gateway16.png);
 }
-
 ul.ctx-menu li.delete{
 	list-style-image: url(../images/delete.png);
 }
@@ -88,14 +86,6 @@ ul.ctx-menu li.script-task{
 
 ul.ctx-menu li.timer{
 	list-style-image: url(../images/timer.png);
-}
-
-ul.ctx-menu li.savepng{
-	list-style-image: url(../images/savepng.png);
-}
-
-ul.ctx-menu li.exclusive-gateway{
-	list-style-image: url(../images/exclusive-gateway16.png);
 }
 
 

@@ -29,18 +29,20 @@ ActivityAdapter.prototype = {
 	 */
 	_fixType : function(originName, element) {
 		if (originName === 'BoundaryEvent') {
-			if (typeof (element.attachedToRef) != 'undefined'
-					&& typeof (element.eventDefinitions) != 'undefined') {
-				if (element.eventDefinitions
-						&& element.eventDefinitions.length > 0) {
-					if (typeof (element.eventDefinitions[0].timeDuration) != 'undefined') {
+			if (element.attachedToRefId) {
+				if (element.eventDefinitions	&& element.eventDefinitions.length > 0) {
+					if (typeof (element.eventDefinitions[0].timeDuration) != 'undefined'
+						|| typeof (element.eventDefinitions[0].timeCycle) != 'undefined'
+						|| typeof (element.eventDefinitions[0].timeDate) != 'undefined') {
 						return 'TimerEvent';
 					}
 				}
 			}
 		} else if (originName === 'StartEvent') {
 			if (element.eventDefinitions && element.eventDefinitions.length > 0) {
-				if (typeof (element.eventDefinitions[0].timeDuration) != 'undefined') {
+				if (typeof (element.eventDefinitions[0].timeDuration) != 'undefined'
+					|| typeof (element.eventDefinitions[0].timeCycle) != 'undefined'
+					|| typeof (element.eventDefinitions[0].timeDate) != 'undefined') {
 					return 'TimerEvent';
 				}
 			}
@@ -66,6 +68,7 @@ ActivityAdapter.prototype = {
 		} else {
 			container = bpmnContainter.stage;
 		}
+		
 		//流程节点
 		var timerEvents = []; //各种计时器节点，必须在其他节点创建之后，再处理绑定关系
 		for (var i = 0; i < process.flowElements.length; i++) {
@@ -84,7 +87,6 @@ ActivityAdapter.prototype = {
 				if (parentNode) {
 					y = location.y - parentNode.y;
 				}
-
 				var node = bpmnContainter._addAcitivty(elementName, {
 					id : element.id,
 					name : element.name,
@@ -222,8 +224,10 @@ ActivityAdapter.prototype = {
 			}
 		}
 		//连接线
+		console.log(bpmnModel);
 		for (var i = 0; i < process.flowElements.length; i++) {
 			var element = process.flowElements[i];
+			console.log(element);
 			var location = bpmnModel.flowLocationMap[element.id];
 			if (location) {
 				var startNode = null, endNode = null, points = [];
@@ -313,6 +317,8 @@ ActivityAdapter.prototype = {
 			}
 			bpmnContainer.raw.candidateStarterGroups = groups;
 		}
+		var executionListeners = bpmnModel.mainProcess.executionListeners;
+		this.doExecutionListeners(bpmnModel.mainProcess, bpmnContainer);
 	},
 	
 	/**

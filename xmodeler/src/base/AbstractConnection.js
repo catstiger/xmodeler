@@ -43,6 +43,7 @@ var AbstractConnection = function(props) {
 	this.selected = false; // 选择状态
 	this.baseType = "connection"; //节点类型
 	this.canBeConnected = false; //不能在连接线上绘制连接线
+	this.lineColor = '#111111';
 
 };
 
@@ -60,7 +61,7 @@ AbstractConnection.prototype.update = function(timeInfo) {
 	    this._drawSelector();
 	    this._drawText();
 	} else {
-		this._drawBasic(this._isDefault() ? '#D9442F' : '#111111'); //#2683D8
+		this._drawBasic(this._isDefault() ? '#D9442F' : this.lineColor); //#2683D8
 		this._drawText();
 	}
 };

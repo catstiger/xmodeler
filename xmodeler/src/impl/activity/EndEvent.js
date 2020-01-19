@@ -28,7 +28,13 @@ EndEvent.prototype.rawObject = function() {
     properties : {
       documentation : this.raw.documentation || '',
       name : this.name,
-      executionlisteners : this.raw.executionlisteners || {}
+      executionlisteners : {
+          totalCount : 1,
+          items : [{
+              execution_listener_event_type: 'start',
+              execution_listener_delegate_expression: '${joaProcessEndListener}'
+          }]
+      }
     },
     resourceId : this.id,
     stencil : {
@@ -36,4 +42,17 @@ EndEvent.prototype.rawObject = function() {
     }
   };
   return obj;
+};
+
+EndEvent.prototype._drawBasic = function() {
+	this.basicPainter.visible = true;
+	this.basicPainter.clear();
+    var x = this.width/2, y = this.width/2, radius = this.width/2;
+    var textLeft = this.width/2 - 12, textTop = this.height / 2 + 3;
+    
+	this.basicPainter.lineStyle(1, '#888888')
+	._addAction(["arc", x, y, radius, 0, Math.PI * 2, 0])
+	._addAction(["font", "12px serif"])._addAction(['fillStyle', '#888888'])
+	._addAction(["fillText", '结束', textLeft, textTop]).endFill();
+	return;
 };

@@ -40,3 +40,17 @@ StartEvent.prototype.rawObject = function() {
 
   return obj;
 };
+
+StartEvent.prototype._drawBasic = function() {
+	this.basicPainter.visible = true;
+	this.basicPainter.clear();
+	
+	var x = this.width/2, y = this.width/2, radius = this.width/2;
+    var textLeft = this.width/2 - 12, textTop = this.height / 2 + 3;
+	
+	this.basicPainter.lineStyle(1, '#007bff')
+	._addAction(["arc", x, y, radius, 0, Math.PI * 2, 0])
+	._addAction([ "font", "12px serif" ])._addAction(['fillStyle', '#007bff'])
+	._addAction([ "fillText", '开始', textLeft, textTop]).endFill();
+	return;
+};

@@ -2,11 +2,13 @@ var SequenceFlow = function(props) {
 	SequenceFlow.superClass.constructor.call(this, props);
 	this.id = props.id || Quark.UIDUtil.createUID('sequenceFlow');
     this.rawType = "SequenceFlow";
+    this.lineColor = '#898989';
 };
 
 Q.inherit(SequenceFlow, AbstractConnection);
 
 SequenceFlow.create = function(props) {
+	console.log(props)
     return new SequenceFlow(props);	
 };
 

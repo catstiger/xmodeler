@@ -43,6 +43,7 @@ var AbstractActivity = function(props) {
 
 	this.border = null;
 	this.icon = null;
+	this.textColor = '#333333' || props.textColor;
 
 	Q.merge(this, props); // 赋值操作
 
@@ -427,12 +428,14 @@ AbstractActivity.prototype._drawText = function() {
 		this.namePainter.clear();
 		var top = 0;
 		if (!this.textAlign || this.textAlign == 'middle') {
-			top = this.height / 2 + 6;
+			top = this.height / 2 + 4;
 		} else if (this.textAlign == 'top') {
 			top = 14;
 		}
-		this.namePainter._addAction([ "font", "12px serif" ])._addAction(
-				[ "fillText", this.name, this.width / 2 - textWidth / 2, top ]);
+		this.namePainter._addAction([ "font", "12px serif" ])
+		._addAction(['fillStyle', this.error ? '#ff0000' : this.textColor])
+		._addAction([ "fillText", this.name, this.width / 2 - textWidth / 2 - 3, top ]);
+		
 	}
 };
 

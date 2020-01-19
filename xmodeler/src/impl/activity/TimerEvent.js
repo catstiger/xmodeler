@@ -32,7 +32,8 @@ TimerEvent.prototype.rawObject = function() {
     resourceId : this.id,
     properties : {
       overrideid : this.id,
-      name : this.name
+      name : this.name,
+      executionlisteners : this.raw.executionlisteners || {}
     },
     stencil : {
       id : stencil

@@ -10,11 +10,33 @@ Q.inherit(UserTask, AbstractTask);
 UserTask.create = function(opts) {
     var options = {
         id : Quark.UIDUtil.createUID('userTask'),
-        autoSize : true
+        autoSize : true,
+        fillColor: '#5fa2dd',
+        textColor: '#ffffff'
     };
     Q.merge(options, opts); // 赋值操作
 
     return new UserTask(options);
+};
+
+UserTask.prototype.resumeBorder = function() {
+	if (!this.active) {
+		this.border = {
+			width : 1,
+			radius : 5,
+			color : '#5fa2dd'
+		};
+	} else {
+		this.border = {
+			width : 3,
+			radius : 5,
+			color : '#FA6042'
+		};
+	}
+};
+
+UserTask.prototype.setError = function(err) {
+	this.error = err;
 };
 
 /**
@@ -41,7 +63,8 @@ UserTask.prototype.rawObject = function() {
       prioritydefinition : this.raw.prioritydefinition,
       tasklisteners : this.raw.tasklisteners || {},
       executionlisteners : this.raw.executionlisteners || {},
-      usertaskassignment : this.raw.usertaskassignment, //这个的格式需要参考activiti json converter测试资源
+      
+      usertaskassignment: this.raw.usertaskassignment,
       defaultflow : this.raw.defaultFlow
     },
     resourceId : this.id,
@@ -49,6 +72,10 @@ UserTask.prototype.rawObject = function() {
       id : this.rawType
     }
   };
+  
+  if (this.error) {
+	  obj.error = this.error;
+  }
 
   return obj;
 };
